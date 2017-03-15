@@ -1,0 +1,550 @@
+﻿
+@{
+    ViewBag.Title = "Simulation";
+}
+
+<section class="header" style="margin-bottom:40px"></section>
+
+@*<head>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/jquery.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-buttons.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-media.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-thumbs.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/wow.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/main.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/mytemplate/css/simulation.css" rel="stylesheet" />
+    @*<script src="~/Scripts/jquery-2.2.3.js"></script>
+    @*<script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jqPlot/jquery.jqplot.js"></script>
+    <link href="~/Scripts/jqPlot/jquery.jqplot.css" rel="stylesheet" />
+    <script src="~/Scripts/jqPlot/plugins/jqplot.pointLabels.js"></script>
+</head>*@
+<!-- Input -->
+<div class="inputs col-md-6">
+    <h2 style="text-align:center">Input</h2><br />
+    <form style="text-align:center">
+        <!-- Motor selection -->
+        <div class="panel panel-default">
+            <div class="panel-heading nav navbar-default" style="padding:0px">
+                <div class="navbar-header">
+                    <text class="navbar-brand">Motor Library</text>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Motor<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Motor 1</a></li>
+                            <li><a href="#">Motor 2</a></li>
+                            <li><a href="#">Motor 3</a></li>
+                            <li><a href="#">Motor 4</a></li>
+                            <li><a href="#">Motor 5</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#motorsettings" data-toggle="collapse" class="glyphicon glyphicon-cog"></a></li>
+                </ul>
+            </div>
+            <div class="panel-body collapse" id="motorsettings" style="padding:0px 10px 10px 10px">
+                <div class="motorLibrary">
+                    <div class="col-md-9" style="padding-left:0px">
+                        <fieldset class="motorParams">
+                            <legend>Equivalent circuit parameters</legend>
+                            <div class="motorParam col-md-4">
+                                <label>Resistance (ohm)</label>
+                                <input type="number" />
+                            </div>
+                            <div class="motorParam col-md-4">
+                                <label>D-axis inductance (H)</label>
+                                <input type="number" />
+                            </div>
+                            <div class="motorParam col-md-4">
+                                <label>Q-axis inductance (H)</label>
+                                <input type="number" />
+                            </div>
+                        </fieldset>
+                    </div>
+                    <fieldset class="col-md-3">
+                        <legend>Flux constant</legend>
+                        <div class="motorParam">
+                            <label>Specify</label>
+                            <input type="number" />
+                        </div>
+                    </fieldset>
+                    <div class="col-md-9" style="padding-left:0px">
+                        <fieldset class="motorParams">
+                            <legend>Mechanical parameters</legend>
+                            <div class="motorParam col-md-4">
+                                <label>Inertia (kg*m^2)</label>
+                                <input type="number" />
+                            </div>
+                            <div class="motorParam col-md-4">
+                                <label>Friction (N-m-s)</label>
+                                <input type="number" />
+                            </div>
+                            <div class="motorParam col-md-4">
+                                <label>Pole pairs</label>
+                                <input type="number" />
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Initial values</legend>
+                            <div class="motorParam col-md-6">
+                                <label>Speed (rad/s)</label>
+                                <input type="number" />
+                            </div>
+                            <div class="motorParam col-md-6">
+                                <label>Angle (deg)</label>
+                                <input type="number" />
+                            </div>
+                        </fieldset>
+                    </div>
+                    <fieldset class="col-md-3">
+                        <legend>Initial currents</legend>
+                        <div class="motorParam col-md-12">
+                            <label>Phase A (A)</label>
+                            <input type="number" />
+                        </div>
+                        <div class="motorParam col-md-12">
+                            <label>Phase B (A)</label>
+                            <input type="number" />
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- Input speed -->
+        <div class="panel panel-default">
+            <div class="panel-heading nav navbar-default" style="padding:0px">
+                <div class="navbar-header">
+                    <text class="navbar-brand">Reference Speed</text>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="testest dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Select Waveform<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" value="Step">Step</a></li>
+                            <li><a href="#" value="Ramp">Ramp</a></li>
+                            <li><a href="#" value="Sinusoid">Sinusoid</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="input-group pull-right">
+                    @Html.Partial("InputFields")
+                </div>
+            </div>
+            <div class="panel-body">
+                <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+            </div>
+        </div>
+        <!-- Load torque -->
+        <div class="panel panel-default">
+            <div class="panel-heading nav navbar-default" style="padding:0px">
+                <div class="navbar-header">
+                    <text class="navbar-brand">Load Torque</text>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Waveform<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Step</a></li>
+                            <li><a href="#">Ramp</a></li>
+                            <li><a href="#">Sinusoid</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="input-group pull-right">
+                    @Html.Partial("InputFields")
+                </div>
+            </div>
+            <div class="panel-body">
+                <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+            </div>
+        </div>
+        <!-- Simulate button -->
+        <div id="simulateButton">
+            <button type="button" onclick="loadOutput()" class="btn btn-primary btn-lg">SIMULATE!</button>
+        </div>
+    </form>
+</div>
+<!-- Output -->
+<div class="output col-md-6" style="display:none">
+    @Html.Partial("SimulationOutput")
+</div>
+<script type="text/javascript">
+    function loadOutput() {
+        $('.output').show();
+    };
+</script>
+<script type="text/javascript">
+    $(".dropdown-menu li a").click(function () {
+        $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
+        $(this).parents(".dropdown").find('.dropdown-toggle').val($(this).data('value'));
+        if ($(this).text() == "Sinusoid") {
+            $(this).parents(".panel-heading").find('.step').hide();
+            $(this).parents(".panel-heading").find('.ramp').hide();
+            $(this).parents(".panel-heading").find('.sine').show();
+        }
+        else if ($(this).text() == "Step") {
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.ramp').hide();
+            $(this).parents(".panel-heading").find('.step').show();
+        }
+        else if ($(this).text() == "Ramp") {
+            $(this).parents(".panel-heading").find('.step').hide();
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.ramp').show();
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function () {
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Speed', graph);
+        var plot1 = jQuery.jqplot('chartdiv_Speed', [graph], {
+            title: 'Speed Input Preview',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Torque', [graph]);
+        var plot1 = jQuery.jqplot('chartdiv_Torque', [graph], {
+            title: 'Torque Input Preview',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "N*m", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Final_StatorCurrent', [graph]);
+        var plot1 = jQuery.jqplot('chartdiv_Final_StatorCurrent', [graph], {
+            title: 'StatorCurrent',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "A", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Final_Speed', [graph]);
+        var plot1 = jQuery.jqplot('chartdiv_Final_Speed', [graph], {
+            title: 'Speed',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Final_Speed', [graph]);
+        var plot1 = jQuery.jqplot('chartdiv_Final_Torque', [graph], {
+            title: 'Torque',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "N*m", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+
+        var graph = [[0, 0]];
+        //$.jqplot('chartdiv_Final_Speed', [graph]);
+        var plot1 = jQuery.jqplot('chartdiv_Final_DCBusVoltage', [graph], {
+            title: 'DCBusVoltage',
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "V", tickOptions: { formatString: '%#.1f' } }
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        //validation for numeric input only
+        $("#frm").keydown(function (e) {
+            //alert(e.keyCode);
+            if (e.keyCode != 173 || e.shiftKey) {
+                // Allow: backspace, delete, tab, escape, enter . -
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 109]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    if (!e.shiftKey)
+                        return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+
+                    e.preventDefault();
+                }
+            }
+        });
+
+        var i = 1;
+        //Add Signal function
+        $("#add_row").click(function () {
+            $('#addr' + i).html("<td>" + (i + 1) + "</td><td style='width: 107px;'><select name='InputType" + i + "' placeholder='Input Type' class='form-control input-md'><option value='Speed'>Speed</option><option value='Torque'>Torque</option></select></td><td style='width: 100px;'><select name='Signal" + i + "' placeholder='Signal' class='form-control input-md'><option value='Ramp'>Ramp</option><option value='Step'>Step</option><option value='Sine'>Sine</option> </select></td><td><input  name='BeginTime" + i + "' type='text' placeholder='Begin Time'  class='form-control input-md'></td><td><input  name='EndTime" + i + "' type='text' placeholder='End Time'  class='form-control input-md'></td><td><input  name='ParameterA" + i + "' type='text' placeholder='Slope/Step time/Amplitude'  class='form-control input-md'></td><td><input  name='ParameterB" + i + "' type='text' placeholder='Start time/Initial value/Bias'  class='form-control input-md'></td><td><input  name='ParameterC" + i + "' type='text' placeholder='Initial output/Final value/Frequency'  class='form-control input-md'></td><td><input  name='ParameterD" + i + "' type='text' placeholder='-/-/Phase'  class='form-control input-md'></td>");
+            $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+            i++;
+        });
+
+        //Delete Signal function
+        $("#delete_row").click(function () {
+
+            if (i > 1) {
+                $("#addr" + (i - 1)).html('');
+                i--;
+            }
+        });
+
+        //Click Preview function
+        $("input[name=Preview]").click(function () {
+            var url = '@Url.Action("SimulationPreview", "Home")';
+            $.ajax({
+                url: url,
+                type: 'Post',
+                dataType: "json",
+                data: $('#frm').serialize(),
+                success: function (response) {
+                    //Chart for Speed Graph
+                    $('#chartdiv_Speed').html("");
+                    var aData = response.ListCoordinate_Speed;
+                    var arr = [];
+
+                    $.map(aData, function (item, index) {
+                        var i = [item.Xcoordinate, item.Ycoordinate];
+                        arr.push(i);
+                    });
+
+                    var plot1 = jQuery.jqplot('chartdiv_Speed', [arr], {
+                        title: 'Speed Input Preview',
+                        seriesDefaults: {
+                            showMarker: false,
+                            pointLabels: { show: false, edgeTolerance: 5 }
+                        },
+                        axes: {
+                            xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                            yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                        }
+                    });
+
+                    $('#chartdiv_Torque').html("");
+                    var aData = response.ListCoordinate_Torque;
+                    var arr = [];
+
+                    $.map(aData, function (item, index) {
+                        var i = [item.Xcoordinate, item.Ycoordinate];
+                        arr.push(i);
+                    });
+
+                    var plot1 = jQuery.jqplot('chartdiv_Torque', [arr], {
+                        title: 'Torque Input Preview',
+                        seriesDefaults: {
+                            showMarker: false,
+                            pointLabels: { show: false, edgeTolerance: 5 }
+                        },
+                        axes: {
+                            xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                            yaxis: { label: "N*m", tickOptions: { formatString: '%#.1f' } }
+                        }
+                    });
+                },
+                error: function () {
+                }
+            });
+        });
+
+        //Click Simulation function
+        $("input[name=Simulation]").click(function () {
+            var url = '@Url.Action("Final_Simulation", "Home")';
+            $.ajax({
+                url: url,
+                type: 'Post',
+                dataType: "json",
+                data: $('#frm').serialize(),
+                timeout: 600000,
+                success: function (response) {
+                    $('#chartdiv_Final_StatorCurrent').html("");
+                    var aData = response.ListCoordinate_StatorCurrent;
+                    if (aData.count != 0) {
+                        var arr = []
+                        $.map(aData, function (item, index) {
+                            var i = [item.Xcoordinate, item.Ycoordinate];
+                            arr.push(i);
+                        });
+                        var plot1 = jQuery.jqplot('chartdiv_Final_StatorCurrent', [arr], {
+                            title: 'StatorCurrent',
+                            seriesDefaults: {
+                                lineWidth: 1, shadow: false,
+                                rendererOptions: { smooth: false },
+                                markerOptions: { show: true, shadow: false, size: 2 },
+                                pointLabels: { show: false, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "A", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+                    else {
+                        var graph = [[0, 0]];
+                        var plot1 = jQuery.jqplot('chartdiv_Final_StatorCurrent', [graph], {
+                            title: 'StatorCurrent',
+                            seriesDefaults: {
+                                showMarker: false,
+                                pointLabels: { show: true, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "A", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+
+                    $('#chartdiv_Final_Speed').html("");
+                    var aData = response.ListCoordinate_Speed;
+                    if (aData.count != 0) {
+                        var arr = []
+                        $.map(aData, function (item, index) {
+                            var i = [item.Xcoordinate, item.Ycoordinate];
+                            arr.push(i);
+                        });
+                        var plot1 = jQuery.jqplot('chartdiv_Final_Speed', [arr], {
+                            title: 'Speed',
+                            seriesDefaults: {
+                                lineWidth: 1, shadow: false,
+                                rendererOptions: { smooth: false },
+                                markerOptions: { show: true, shadow: false, size: 2 },
+                                pointLabels: { show: false, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+                    else {
+                        var graph = [[0, 0]];
+                        var plot1 = jQuery.jqplot('chartdiv_Final_Speed', [graph], {
+                            title: 'Speed',
+                            seriesDefaults: {
+                                showMarker: false,
+                                pointLabels: { show: true, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+
+                    $('#chartdiv_Final_Torque').html("");
+                    var aData = response.ListCoordinate_Torque;
+                    if (aData.count != 0) {
+                        var arr = []
+                        $.map(aData, function (item, index) {
+                            var i = [item.Xcoordinate, item.Ycoordinate];
+                            arr.push(i);
+                        });
+                        var plot1 = jQuery.jqplot('chartdiv_Final_Torque', [arr], {
+                            title: 'Torque',
+                            seriesDefaults: {
+                                lineWidth: 1, shadow: false,
+                                rendererOptions: { smooth: false },
+                                markerOptions: { show: true, shadow: false, size: 2 },
+                                pointLabels: { show: false, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "N*m", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+                    else {
+                        var graph = [[0, 0]];
+                        var plot1 = jQuery.jqplot('chartdiv_Final_Torque', [graph], {
+                            title: 'Torque',
+                            seriesDefaults: {
+                                showMarker: false,
+                                pointLabels: { show: true, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "N*m", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+
+                    $('#chartdiv_Final_DCBusVoltage').html("");
+                    var aData = response.ListCoordinate_DCBusVoltage;
+                    if (aData.count != 0) {
+                        var arr = []
+                        $.map(aData, function (item, index) {
+                            var i = [item.Xcoordinate, item.Ycoordinate];
+                            arr.push(i);
+                        });
+                        var plot1 = jQuery.jqplot('chartdiv_Final_DCBusVoltage', [arr], {
+                            title: 'DCBusVoltage',
+                            seriesDefaults: {
+                                lineWidth: 1, shadow: false,
+                                rendererOptions: { smooth: false },
+                                markerOptions: { show: true, shadow: false, size: 2 },
+                                pointLabels: { show: false, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "V", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+                    else {
+                        var graph = [[0, 0]];
+                        var plot1 = jQuery.jqplot('chartdiv_Final_DCBusVoltage', [graph], {
+                            title: 'DCBusVoltage',
+                            seriesDefaults: {
+                                showMarker: false,
+                                pointLabels: { show: true, edgeTolerance: 5 }
+                            },
+                            axes: {
+                                xaxis: { label: "sec", renderer: $.jqplot.CategoryAxisRenderer, tickOptions: { formatString: '%#.1f' } },
+                                yaxis: { label: "V", tickOptions: { formatString: '%#.1f' } }
+                            }
+                        });
+                    }
+                },
+                error: function () { },
+            });
+        });
+    });
+
+</script>
