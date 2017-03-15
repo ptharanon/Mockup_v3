@@ -5,22 +5,7 @@
 
 <section class="header" style="margin-bottom:40px"></section>
 
-@*<head>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/jquery.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-buttons.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-media.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/fancybox-thumbs.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/wow.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/mytemplate/")js/main.js"></script>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/mytemplate/css/simulation.css" rel="stylesheet" />
-    @*<script src="~/Scripts/jquery-2.2.3.js"></script>
-    @*<script src="~/Scripts/jquery-2.2.3.min.js"></script>
-    <script src="~/Scripts/jqPlot/jquery.jqplot.js"></script>
-    <link href="~/Scripts/jqPlot/jquery.jqplot.css" rel="stylesheet" />
-    <script src="~/Scripts/jqPlot/plugins/jqplot.pointLabels.js"></script>
-</head>*@
+
 <!-- Input -->
 <div class="inputs col-md-6">
     <h2 style="text-align:center">Input</h2><br />
@@ -29,7 +14,7 @@
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default" style="padding:0px">
                 <div class="navbar-header">
-                    <text class="navbar-brand">Motor Library</text>
+                    <text class="navbar-brand" style="padding:15px">Motor Library</text>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
@@ -119,7 +104,7 @@
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default" style="padding:0px">
                 <div class="navbar-header">
-                    <text class="navbar-brand">Reference Speed</text>
+                    <text class="navbar-brand" style="padding:15px">Reference Speed</text>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
@@ -133,7 +118,7 @@
                         </ul>
                     </li>
                 </ul>
-                <div class="input-group pull-right">
+                <div class="row input-group pull-right">
                     @Html.Partial("InputFields")
                 </div>
             </div>
@@ -145,7 +130,7 @@
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default" style="padding:0px">
                 <div class="navbar-header">
-                    <text class="navbar-brand">Load Torque</text>
+                    <text class="navbar-brand" style="padding:15px">Load Torque</text>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">

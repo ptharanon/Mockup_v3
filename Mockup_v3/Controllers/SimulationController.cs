@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Mockup_v3.Controllers
 {
+    [Authorize]
     public class SimulationController : Controller
     {
         // GET: Simulation
