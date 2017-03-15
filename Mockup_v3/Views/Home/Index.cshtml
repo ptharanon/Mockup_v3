@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+    <!-- Section: intro -->
+<section id="intro" class="intro" style="margin:0">
+
+    <div class="slogan">
+        <h2>WELCOME TO <span class="text_color">WEB-BASED SIMULATION WEBSITE</span> </h2>
+        <h4><i>TO GET STARTED WITH THE SIMULATION, PLEASE PRESS THE BUTTON BELOW</i></h4>
+    </div>
+    <div class="page-scroll">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p><a href="~/Home/About" class="btn btn-circle"><i class="glyphicon glyphicon-play"  style="color:white"></i></a></p>
+        }
+        else
+        {
+            <p><a href="~/Account/Login" class="btn btn-circle"><i class="glyphicon glyphicon-play" style="color:white"></i></a></p>
+        }
+
+        @*<a href="#service" class="btn btn-circle">
+            <i class="fa fa-angle-double-down animated"></i>
+        </a>*@
+    </div>
+</section>
+<!-- /Section: intro -->
