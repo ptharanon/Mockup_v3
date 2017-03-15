@@ -14,7 +14,7 @@
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default" style="padding:0px">
                 <div class="navbar-header">
-                    <text class="navbar-brand" style="padding:15px">Motor Library</text>
+                    <div class="navbar-brand" style="padding:15px; height:50px">Motor Library</div>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
@@ -28,7 +28,7 @@
                         </ul>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav" style="float:right">
                     <li><a href="#motorsettings" data-toggle="collapse" class="glyphicon glyphicon-cog"></a></li>
                 </ul>
             </div>
@@ -38,63 +38,63 @@
                         <fieldset class="motorParams">
                             <legend>Equivalent circuit parameters</legend>
                             <div class="motorParam col-md-4">
-                                <label>Resistance (ohm)</label>
-                                <input type="number" />
+                                <label class="label-custom">Resistance (ohm)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-4">
-                                <label>D-axis inductance (H)</label>
-                                <input type="number" />
+                                <label class="label-custom">D-axis inductance (H)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-4">
-                                <label>Q-axis inductance (H)</label>
-                                <input type="number" />
+                                <label class="label-custom">Q-axis inductance (H)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                         </fieldset>
                     </div>
                     <fieldset class="col-md-3">
                         <legend>Flux constant</legend>
                         <div class="motorParam">
-                            <label>Specify</label>
-                            <input type="number" />
+                            <label class="label-custom">Specify</label>
+                            <input class="input-custom" type="number" />
                         </div>
                     </fieldset>
                     <div class="col-md-9" style="padding-left:0px">
                         <fieldset class="motorParams">
                             <legend>Mechanical parameters</legend>
                             <div class="motorParam col-md-4">
-                                <label>Inertia (kg*m^2)</label>
-                                <input type="number" />
+                                <label class="label-custom">Inertia (kg*m^2)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-4">
-                                <label>Friction (N-m-s)</label>
-                                <input type="number" />
+                                <label class="label-custom">Friction (N-m-s)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-4">
-                                <label>Pole pairs</label>
-                                <input type="number" />
+                                <label class="label-custom">Pole pairs</label>
+                                <input class="input-custom" type="number" />
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>Initial values</legend>
                             <div class="motorParam col-md-6">
-                                <label>Speed (rad/s)</label>
-                                <input type="number" />
+                                <label class="label-custom">Speed (rad/s)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-6">
-                                <label>Angle (deg)</label>
-                                <input type="number" />
+                                <label class="label-custom">Angle (deg)</label>
+                                <input class="input-custom" type="number" />
                             </div>
                         </fieldset>
                     </div>
                     <fieldset class="col-md-3">
                         <legend>Initial currents</legend>
                         <div class="motorParam col-md-12">
-                            <label>Phase A (A)</label>
-                            <input type="number" />
+                            <label class="label-custom">Phase A (A)</label>
+                            <input class="input-custom" type="number" />
                         </div>
                         <div class="motorParam col-md-12">
-                            <label>Phase B (A)</label>
-                            <input type="number" />
+                            <label class="label-custom">Phase B (A)</label>
+                            <input class="input-custom" type="number" />
                         </div>
                     </fieldset>
                 </div>
@@ -118,7 +118,7 @@
                         </ul>
                     </li>
                 </ul>
-                <div class="row input-group pull-right">
+                <div class="row input-group" style="float:right; margin-right:0px">
                     @Html.Partial("InputFields")
                 </div>
             </div>
@@ -157,7 +157,7 @@
     </form>
 </div>
 <!-- Output -->
-<div class="output col-md-6" style="display:none">
+<div class="output col-md-6" style="display:none; text-align: center">
     @Html.Partial("SimulationOutput")
 </div>
 <script type="text/javascript">
