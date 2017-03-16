@@ -76,12 +76,16 @@
                         </fieldset>
                         <fieldset>
                             <legend>Initial values</legend>
-                            <div class="motorParam col-md-6">
+                            <div class="motorParam col-md-4">
                                 <label class="label-custom">Speed (rad/s)</label>
                                 <input class="input-custom" type="number" />
                             </div>
-                            <div class="motorParam col-md-6">
+                            <div class="motorParam col-md-4">
                                 <label class="label-custom">Angle (deg)</label>
+                                <input class="input-custom" type="number" />
+                            </div>
+                            <div class="motorParam col-md-4">
+                                <label class="label-custom">Kp</label>
                                 <input class="input-custom" type="number" />
                             </div>
                         </fieldset>
@@ -112,9 +116,10 @@
                             Select Waveform<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" value="Step">Step</a></li>
-                            <li><a href="#" value="Ramp">Ramp</a></li>
-                            <li><a href="#" value="Sinusoid">Sinusoid</a></li>
+                            <li><a href="#">Step</a></li>
+                            <li><a href="#">Ramp</a></li>
+                            <li><a href="#">Sinusoid</a></li>
+                            <li><a href="#">Custom</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -139,6 +144,7 @@
                             <li><a href="#">Step</a></li>
                             <li><a href="#">Ramp</a></li>
                             <li><a href="#">Sinusoid</a></li>
+                            <li><a href="#" value="Custom">Custom</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -151,21 +157,15 @@
             </div>
         </div>
         <!-- Simulate button -->
-        <div id="simulateButton">
-            <button type="button" onclick="loadOutput()" class="btn btn-primary btn-lg">SIMULATE!</button>
+        <div style="margin:20px">
+            <button type="button" class="btn btn-primary btn-lg">SIMULATE!</button>
         </div>
     </form>
 </div>
 <!-- Output -->
-<div class="output col-md-6" style="display:none; text-align: center">
+<div class="output col-md-6" style="text-align: center">
     @Html.Partial("SimulationOutput")
 </div>
-
-<script type="text/javascript">
-    function loadOutput() {
-        $('.output').show();
-    };
-</script>
 
 <script type="text/javascript">
     $(".dropdown-menu li a").click(function () {
@@ -175,16 +175,25 @@
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.sine').show();
+            $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Step") {
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.step').show();
+            $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Ramp") {
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.ramp').show();
+            $(this).parents(".panel-heading").find('.custom').hide();
+        }
+        else if ($(this).text() == "Custom") {
+            $(this).parents(".panel-heading").find('.step').hide();
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.ramp').hide();
+            $(this).parents(".panel-heading").find('.custom').show();
         }
     });
 </script>

@@ -34,6 +34,12 @@
     height: 50px;
 }
 
+.custom {
+    display: none;
+    margin: 0px;
+    height: 50px;
+}
+
 p.navbar-text {
     margin-left: 5px;
     margin-right: 5px;
