@@ -35,7 +35,7 @@
             <div class="panel-body collapse" id="motorsettings" style="padding:0px 10px 10px 10px">
                 <div class="motorLibrary">
                     <div class="col-md-9" style="padding-left:0px">
-                        <fieldset class="motorParams">
+                        <fieldset class="motorParams" style="padding-bottom:10px">
                             <legend>Equivalent circuit parameters</legend>
                             <div class="motorParam col-md-4">
                                 <label class="label-custom">Resistance (ohm)</label>
@@ -59,7 +59,7 @@
                         </div>
                     </fieldset>
                     <div class="col-md-9" style="padding-left:0px">
-                        <fieldset class="motorParams">
+                        <fieldset class="motorParams" style="padding-bottom:10px">
                             <legend>Mechanical parameters</legend>
                             <div class="motorParam col-md-4">
                                 <label class="label-custom">Inertia (kg*m^2)</label>
@@ -70,7 +70,7 @@
                                 <input class="input-custom" type="number" />
                             </div>
                             <div class="motorParam col-md-4">
-                                <label class="label-custom">Pole pairs</label>
+                                <label class="label-custom">Pole pairs (Motors)</label>
                                 <input class="input-custom" type="number" />
                             </div>
                         </fieldset>
@@ -86,7 +86,7 @@
                             </div>
                         </fieldset>
                     </div>
-                    <fieldset class="col-md-3">
+                    <fieldset class="col-md-3" style="padding-bottom:14px">
                         <legend>Initial currents</legend>
                         <div class="motorParam col-md-12">
                             <label class="label-custom">Phase A (A)</label>
@@ -122,7 +122,7 @@
                     @Html.Partial("InputFields")
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" id="graph-speed">
                 <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
             </div>
         </div>
@@ -160,11 +160,13 @@
 <div class="output col-md-6" style="display:none; text-align: center">
     @Html.Partial("SimulationOutput")
 </div>
+
 <script type="text/javascript">
     function loadOutput() {
         $('.output').show();
     };
 </script>
+
 <script type="text/javascript">
     $(".dropdown-menu li a").click(function () {
         $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
@@ -186,7 +188,20 @@
         }
     });
 </script>
+
+<!--Still not working-->
 <script type="text/javascript">
+    $(".preview").click(function () {
+        var x = $(this).parent();
+        var text = "graph-" + x;
+        alert(text);
+        $("#"+text).removeClass('hidden');
+    });
+</script>
+
+<!--OLD CODE-->
+
+@*<script type="text/javascript">
     $(window).load(function () {
         var graph = [[0, 0]];
         //$.jqplot('chartdiv_Speed', graph);
@@ -532,4 +547,4 @@
         });
     });
 
-</script>
+</script>*@
