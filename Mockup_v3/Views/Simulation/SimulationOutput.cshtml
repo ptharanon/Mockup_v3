@@ -11,7 +11,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+        <div id="outputSCGraph" style="height:250px"></div>
     </div>
 </div>
 <!-- Torque -->
@@ -25,7 +25,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+        <div id="outputTorqueGraph" style="height:250px"></div>
     </div>
 </div>
 <!-- Speed -->
@@ -39,7 +39,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+        <div id="outputSpeedGraph" style="height:250px"></div>
     </div>
 </div>
 <!-- DC bus voltage -->
@@ -53,9 +53,79 @@
         </ul>
     </div>
     <div class="panel-body">
-        <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+        <div id="outputDCVGraph" style="height:250px"></div>
     </div>
 </div>
 <div style="margin:20px">
     <button type="button" class="btn btn-primary btn-lg">EXPORT TO CSV</button>
 </div>
+
+
+
+<script type="text/javascript">
+    $(window).load(function () {
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('outputSCGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true,
+                zoom: true
+            }
+        });
+
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('outputTorqueGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true,
+                zoom: true
+            }
+        });
+
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('outputSpeedGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true,
+                zoom: true
+            }
+        });
+
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('outputDCVGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true,
+                zoom: true
+            }
+        });
+    });
+</script>
