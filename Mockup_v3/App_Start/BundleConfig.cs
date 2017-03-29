@@ -9,17 +9,19 @@ namespace Mockup_v3
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                         "~/Scripts/jquery-{version}.js"));
+                         //"~/Scripts/jquery-{version}.js"));
+                         "~/Scripts/jqPlot/jquery.js",
+                         "~/Scripts/jqPlot/jquery.jqplot.js",
+                         "~/Scripts/jqPlot/plugins/jqplot.cursor.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                "~/Scripts/custom.js",
                 "~/Scripts/jquery.easing.{version}.js",
                 "~/Scripts/jquery.easing.min.js",
-                "~/Scripts/jquery.min.js",
                 "~/Scripts/jquery.scrollTo.js",
+                "~/Scripts/custom.js",
                 "~/Scripts/wow.min.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

@@ -5,7 +5,6 @@
 
 <section class="header" style="margin-bottom:40px"></section>
 
-
 <!-- Input -->
 <div class="inputs col-md-6">
     <h2 style="text-align:center">Input</h2><br />
@@ -128,7 +127,7 @@
                 </div>
             </div>
             <div class="panel-body" id="graph-speed">
-                <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+                <div id="refSpeedGraph" style="height:250px"></div>
             </div>
         </div>
         <!-- Load torque -->
@@ -144,7 +143,7 @@
                             <li><a href="#">Step</a></li>
                             <li><a href="#">Ramp</a></li>
                             <li><a href="#">Sinusoid</a></li>
-                            <li><a href="#" value="Custom">Custom</a></li>
+                            <li><a href="#">Custom</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -153,7 +152,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <img src="https://www.sscc.edu/home/jdavidso/music/musicnotes/SineWave.gif" style="width:100%" />
+                <div id="loadTorqueGraph" style="height:250px"></div>
             </div>
         </div>
         <!-- Simulate button -->
@@ -166,6 +165,40 @@
 <div class="output col-md-6" style="text-align: center">
     @Html.Partial("SimulationOutput")
 </div>
+
+<script type="text/javascript">
+    $(window).load(function () {
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('refSpeedGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true
+            }
+        });
+
+        var graph = [[0, 0]];
+        var plot1 = jQuery.jqplot('loadTorqueGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+            },
+            cursor: {
+                show: true
+            }
+        });
+    });
+</script>
 
 <script type="text/javascript">
     $(".dropdown-menu li a").click(function () {
