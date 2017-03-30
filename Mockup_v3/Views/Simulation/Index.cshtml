@@ -162,36 +162,36 @@
     </form>
 </div>
 <!-- Output -->
-<div class="output col-md-6" style="text-align: center">
+<div class="outputs col-md-6" style="text-align: center">
     @Html.Partial("SimulationOutput")
 </div>
 
 <script type="text/javascript">
     $(window).load(function () {
-        var graph = [[0, 0]];
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         var plot1 = jQuery.jqplot('refSpeedGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true
             }
         });
 
-        var graph = [[0, 0]];
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         var plot1 = jQuery.jqplot('loadTorqueGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true

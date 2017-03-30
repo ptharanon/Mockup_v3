@@ -12,7 +12,9 @@ namespace Mockup_v3
                          //"~/Scripts/jquery-{version}.js"));
                          "~/Scripts/jqPlot/jquery.js",
                          "~/Scripts/jqPlot/jquery.jqplot.js",
-                         "~/Scripts/jqPlot/plugins/jqplot.cursor.js"));
+                         "~/Scripts/jqPlot/plugins/jqplot.cursor.js",
+                         "~/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js",
+                         "~/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -39,7 +41,8 @@ namespace Mockup_v3
                       "~/Content/About.css",
                       "~/Content/animate.css",
                       "~/Content/simulation.css",
-                      "~/Content/style.css"));
+                      "~/Content/style.css",
+                      "~/Scripts/jqPlot/jquery.jqplot.css"));
 
             bundles.Add(new StyleBundle("~/Content/Color").Include(
                 "~/Content/default.css"));

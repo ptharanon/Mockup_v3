@@ -7,7 +7,7 @@
             <text class="navbar-brand" style="padding:15px">Stator Current</text>
         </div>
         <ul class="nav navbar-nav" style="float:right">
-            <li><a href="#" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a onClick="outputSCPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
         </ul>
     </div>
     <div class="panel-body">
@@ -21,7 +21,7 @@
             <text class="navbar-brand" style="padding:15px">Torque</text>
         </div>
         <ul class="nav navbar-nav" style="float:right">
-            <li><a href="#" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a onClick="outputTorquePlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
         </ul>
     </div>
     <div class="panel-body">
@@ -35,7 +35,7 @@
             <text class="navbar-brand" style="padding:15px">Speed</text>
         </div>
         <ul class="nav navbar-nav" style="float:right">
-            <li><a href="#" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a onClick="outputSpeedPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
         </ul>
     </div>
     <div class="panel-body">
@@ -49,7 +49,7 @@
             <text class="navbar-brand" style="padding:15px">DC Bus Voltage</text>
         </div>
         <ul class="nav navbar-nav" style="float:right">
-            <li><a href="#" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a onClick="outputDCVPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
         </ul>
     </div>
     <div class="panel-body">
@@ -63,16 +63,20 @@
 
 
 <script type="text/javascript">
+    var outputSCPlot;
+    var outputTorquePlot;
+    var outputSpeedPlot;
+    var outputDCVPlot;
     $(window).load(function () {
-        var graph = [[0, 0]];
-        var plot1 = jQuery.jqplot('outputSCGraph', [graph], {
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        outputSCPlot = jQuery.jqplot('outputSCGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "A", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true,
@@ -80,15 +84,15 @@
             }
         });
 
-        var graph = [[0, 0]];
-        var plot1 = jQuery.jqplot('outputTorqueGraph', [graph], {
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        outputTorquePlot = jQuery.jqplot('outputTorqueGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true,
@@ -96,15 +100,15 @@
             }
         });
 
-        var graph = [[0, 0]];
-        var plot1 = jQuery.jqplot('outputSpeedGraph', [graph], {
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        outputSpeedPlot = jQuery.jqplot('outputSpeedGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true,
@@ -112,15 +116,15 @@
             }
         });
 
-        var graph = [[0, 0]];
-        var plot1 = jQuery.jqplot('outputDCVGraph', [graph], {
+        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        outputDCVPlot = jQuery.jqplot('outputDCVGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
+                yaxis: { label: "V", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
             },
             cursor: {
                 show: true,
