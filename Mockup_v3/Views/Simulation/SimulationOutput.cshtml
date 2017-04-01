@@ -67,6 +67,7 @@
     var outputTorquePlot;
     var outputSpeedPlot;
     var outputDCVPlot;
+
     $(window).load(function () {
         var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         outputSCPlot = jQuery.jqplot('outputSCGraph', [graph], {
@@ -75,8 +76,8 @@
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "A", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "A", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true,
@@ -91,8 +92,8 @@
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true,
@@ -107,8 +108,8 @@
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true,
@@ -123,13 +124,20 @@
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "V", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "V", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true,
                 zoom: true
             }
         });
+    });
+
+    $(window).resize(function () {
+        outputSCPlot.replot();
+        outputTorquePlot.replot();
+        outputSpeedPlot.replot();
+        outputDCVPlot.replot();
     });
 </script>

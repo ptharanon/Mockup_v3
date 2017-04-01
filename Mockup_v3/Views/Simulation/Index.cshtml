@@ -167,16 +167,19 @@
 </div>
 
 <script type="text/javascript">
+    var refSpeedPlot;
+    var loadTorquePlot;
+
     $(window).load(function () {
         var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
-        var plot1 = jQuery.jqplot('refSpeedGraph', [graph], {
+        refSpeedPlot = jQuery.jqplot('refSpeedGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true
@@ -184,19 +187,24 @@
         });
 
         var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
-        var plot1 = jQuery.jqplot('loadTorqueGraph', [graph], {
+        loadTorquePlot = jQuery.jqplot('loadTorqueGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
                 pointLabels: { show: false, edgeTolerance: 5 }
             },
             axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } },
-                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer, tickOptions: { formatString: '%#.1f' } }
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
             },
             cursor: {
                 show: true
             }
         });
+    });
+
+    $(window).resize(function () {
+        refSpeedPlot.replot();
+        loadTorquePlot.replot();
     });
 </script>
 

@@ -15,16 +15,16 @@
 
 <div class="form-group sine">
     <p class="navbar-text navbar-text-custom">Amplitude</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="1">
 
     <p class="navbar-text navbar-text-custom">Bias</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="0">
 
     <p class="navbar-text navbar-text-custom">Frequency</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="1">
 
     <p class="navbar-text navbar-text-custom">Phase</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="0">
 
     <ul class="nav navbar-nav" style="float:right">
         <li><a id="preview_btn" href="#" class="glyphicon glyphicon-ok"></a></li>
@@ -33,13 +33,13 @@
 
 <div class="form-group ramp">
     <p class="navbar-text navbar-text-custom">Slope</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="1">
 
     <p class="navbar-text navbar-text-custom">Start time</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="0">
 
     <p class="navbar-text navbar-text-custom">Initial value</p>
-    <input type="text" class="form-control inputField">
+    <input type="text" class="form-control inputField" value="0">
 
     <ul class="nav navbar-nav" style="float:right">
         <li><a id="preview_btn" href="#" class="glyphicon glyphicon-ok"></a></li>
@@ -48,7 +48,15 @@
 
 <div class="form-group custom">
     <p class="navbar-text navbar-text-custom">Upload</p>
+    <input id="upload" type="file" style="display:none" />
     <ul class="nav navbar-nav" style="float:right">
-        <li><a href="#" class="glyphicon glyphicon-upload" role="button"></a></li>
+        <li><a onclick="uploadFile()" class="glyphicon glyphicon-upload"></a></li>
     </ul>
 </div>
+
+<script>
+    function uploadFile() {
+        $("#upload:hidden").trigger('click');
+    }
+</script>
+
