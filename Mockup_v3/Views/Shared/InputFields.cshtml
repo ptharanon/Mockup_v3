@@ -48,15 +48,51 @@
 
 <div class="form-group custom">
     <p class="navbar-text navbar-text-custom">Upload</p>
-    <input id="upload" type="file" style="display:none" />
+    <input id="upload" type="file" style="display:none" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="openFile(event)" />
     <ul class="nav navbar-nav" style="float:right">
-        <li><a onclick="uploadFile()" class="glyphicon glyphicon-upload"></a></li>
+        <li><a onclick="uploadFile(event)" class="glyphicon glyphicon-upload"></a></li>
     </ul>
 </div>
 
 <script>
-    function uploadFile() {
-        $("#upload:hidden").trigger('click');
+    function uploadFile(event) {
+        $(event.path[3].children.upload).trigger('click');
     }
+</script>
+
+<script>
+    var openFile = function (event) {
+
+        var f = event.path[0].files[0];
+        var reader = new FileReader();
+        var name = f.name;
+        var plotData = [];
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, { type: 'binary' });
+            var i = 2;
+            var cellA = "A" + i;
+            var cellB = "B" + i;
+            var Sheet = workbook.Sheets[workbook.SheetNames[0]];
+            while (Sheet[cellA] !== undefined && Sheet[cellB] !== undefined) {
+                plotData[i - 2] = [Sheet[cellA].v, Sheet[cellB].v];
+                i++;
+                var cellA = "A" + i;
+                var cellB = "B" + i;
+            }
+            console.log(plotData);
+        };
+        reader.readAsBinaryString(f);
+
+        var id = event.path[4].id;
+        if (id == "inputSpeed") {
+            refSpeedPlot.series[0].data = plotData;
+            refSpeedPlot.replot({ resetAxes: true });
+        }
+        if (id == "inputTorque") {
+            loadTorquePlot.series[0].data = plotData;
+            loadTorquePlot.replot({ resetAxes: true });
+        }
+    };
 </script>
 
