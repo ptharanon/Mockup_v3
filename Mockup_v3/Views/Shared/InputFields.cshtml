@@ -80,18 +80,19 @@
                 var cellA = "A" + i;
                 var cellB = "B" + i;
             }
-            console.log(plotData);
         };
         reader.readAsBinaryString(f);
 
-        var id = event.path[4].id;
-        if (id == "inputSpeed") {
-            refSpeedPlot.series[0].data = plotData;
-            refSpeedPlot.replot({ resetAxes: true });
-        }
-        if (id == "inputTorque") {
-            loadTorquePlot.series[0].data = plotData;
-            loadTorquePlot.replot({ resetAxes: true });
+        reader.onloadend = function (e) {
+            var id = event.path[4].id;
+            if (id == "inputSpeed") {
+                refSpeedPlot.series[0].data = plotData;
+                refSpeedPlot.replot({ resetAxes: true });
+            }
+            if (id == "inputTorque") {
+                loadTorquePlot.series[0].data = plotData;
+                loadTorquePlot.replot({ resetAxes: true });
+            }
         }
     };
 </script>
