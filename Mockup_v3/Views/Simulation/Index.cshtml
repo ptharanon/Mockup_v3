@@ -19,11 +19,11 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Motor<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Motor 1</a></li>
-                            <li><a href="#">Motor 2</a></li>
-                            <li><a href="#">Motor 3</a></li>
-                            <li><a href="#">Motor 4</a></li>
-                            <li><a href="#">Motor 5</a></li>
+                            <li><a>Motor 1</a></li>
+                            <li><a>Motor 2</a></li>
+                            <li><a>Motor 3</a></li>
+                            <li><a>Motor 4</a></li>
+                            <li><a>Motor 5</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -115,10 +115,10 @@
                             Select Waveform<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Step</a></li>
-                            <li><a href="#">Ramp</a></li>
-                            <li><a href="#">Sinusoid</a></li>
-                            <li><a href="#">Custom</a></li>
+                            <li><a>Step</a></li>
+                            <li><a>Ramp</a></li>
+                            <li><a>Sinusoid</a></li>
+                            <li><a>Custom</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -140,10 +140,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Waveform<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Step</a></li>
-                            <li><a href="#">Ramp</a></li>
-                            <li><a href="#">Sinusoid</a></li>
-                            <li><a href="#">Custom</a></li>
+                            <li><a>Step</a></li>
+                            <li><a>Ramp</a></li>
+                            <li><a>Sinusoid</a></li>
+                            <li><a>Custom</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -171,7 +171,7 @@
     var loadTorquePlot;
 
     $(window).load(function () {
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        var graph = [[0, 0]];
         refSpeedPlot = jQuery.jqplot('refSpeedGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
@@ -186,7 +186,6 @@
             }
         });
 
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         loadTorquePlot = jQuery.jqplot('loadTorqueGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
@@ -236,7 +235,47 @@
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.custom').show();
         }
+        updatePlot($(this).text(), $(this).parents(".panel")[0].id);
     });
+
+    $(".inputField").change(function (event) {
+        updatePlot($(this).parents(".nav").find(".dropdown-toggle")[0].text, $(this).parents(".panel")[0].id)
+    });
+
+    function updatePlot(plotType, plotName) {
+        var plotData = [];
+        if (plotType == "Step") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
+            var stepTime = parseFloat(inputFields.children[1].value);
+            var initialValue = parseFloat(inputFields.children[3].value);
+            var finalValue = parseFloat(inputFields.children[5].value);
+            plotData = [[stepTime - 5, initialValue], [stepTime, initialValue], [stepTime, finalValue], [stepTime + 5, finalValue]];
+        } else if (plotType == "Ramp") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
+            var slope = parseFloat(inputFields.children[1].value);
+            var startTime = parseFloat(inputFields.children[3].value);
+            var initialValue = parseFloat(inputFields.children[5].value);
+            plotData = [[startTime - 5, initialValue], [startTime, initialValue], [startTime + 5, initialValue + 5 * slope]];
+        } else if (plotType == "Sinusoid") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
+            var amp = parseFloat(inputFields.children[1].value);
+            var bias = parseFloat(inputFields.children[3].value);
+            var freq = parseFloat(inputFields.children[5].value);
+            var phase = parseFloat(inputFields.children[7].value);
+            var i;
+            var sample = 0.02;
+            for (i = -5 / sample; i < 5 / sample; i++) {
+                plotData[i + 5/sample] = [i * sample, amp * Math.sin(freq * i * sample + phase) + bias];
+            }
+        }
+        if (plotName == "inputSpeed") {
+            refSpeedPlot.series[0].data = plotData;
+            refSpeedPlot.replot({ resetAxes: true });
+        } else if (plotName == "inputTorque") {
+            loadTorquePlot.series[0].data = plotData;
+            loadTorquePlot.replot({ resetAxes: true });
+        }
+    };
 </script>
 
 <!--Still not working-->

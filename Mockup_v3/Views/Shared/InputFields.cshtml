@@ -7,10 +7,6 @@
 
     <p class="navbar-text navbar-text-custom">Final value</p>
     <input type="text" class="form-control inputField" value="1">
-
-    <ul class="nav navbar-nav" style="float:right">
-        <li><a href="#" class="glyphicon glyphicon-ok" role="button"></a></li>
-    </ul>
 </div>
 
 <div class="form-group sine">
@@ -25,10 +21,6 @@
 
     <p class="navbar-text navbar-text-custom">Phase</p>
     <input type="text" class="form-control inputField" value="0">
-
-    <ul class="nav navbar-nav" style="float:right">
-        <li><a id="preview_btn" href="#" class="glyphicon glyphicon-ok"></a></li>
-    </ul>
 </div>
 
 <div class="form-group ramp">
@@ -40,10 +32,6 @@
 
     <p class="navbar-text navbar-text-custom">Initial value</p>
     <input type="text" class="form-control inputField" value="0">
-
-    <ul class="nav navbar-nav" style="float:right">
-        <li><a id="preview_btn" href="#" class="glyphicon glyphicon-ok"></a></li>
-    </ul>
 </div>
 
 <div class="form-group custom">
@@ -57,10 +45,8 @@
 <script>
     function uploadFile(event) {
         $(event.path[3].children.upload).trigger('click');
-    }
-</script>
+    };
 
-<script>
     var openFile = function (event) {
 
         var f = event.path[0].files[0];
@@ -96,4 +82,3 @@
         }
     };
 </script>
-

@@ -23,8 +23,8 @@ namespace Mockup_v3
                 "~/Scripts/jquery.easing.{version}.js",
                 "~/Scripts/jquery.easing.min.js",
                 "~/Scripts/jquery.scrollTo.js",
-                "~/Scripts/custom.js",
-                "~/Scripts/wow.min.js"));
+                "~/Scripts/wow.min.js",
+                "~/Scripts/custom.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
