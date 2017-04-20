@@ -51,7 +51,7 @@ namespace Mockup_v3.Models
         public List<List<double[]>> startSimulation(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
         {
             processData(speedCoordinates, torqueCoordinates, size);
-            double[] results = new double[signalSize];
+            double[] results = new double[signalSize*6];
 
             List<List<double[]>> setOfOutputs = new List<List<double[]>>();
             List<double[]> stator_Current = new List<double[]>();
@@ -62,7 +62,7 @@ namespace Mockup_v3.Models
             try
             {
                 IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, signalSize);
-                Marshal.Copy(pointer, results, 0, signalSize);
+                Marshal.Copy(pointer, results, 0, signalSize*6);
                 Marshal.FreeCoTaskMem(pointer);
                 
                 for(int i=0; i<signalSize; i++)
