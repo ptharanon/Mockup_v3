@@ -14,5 +14,12 @@ namespace Mockup_v3.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult Simulate(String test)
+        {
+            return Json(new { testresult = test }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
