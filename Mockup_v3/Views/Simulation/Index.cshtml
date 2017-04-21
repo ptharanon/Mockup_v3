@@ -244,28 +244,40 @@
 
     function updatePlot(plotType, plotName) {
         var plotData = [];
+        var i;
+        var sample = 0.02;
         if (plotType == "Step") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
             var stepTime = parseFloat(inputFields.children[1].value);
             var initialValue = parseFloat(inputFields.children[3].value);
             var finalValue = parseFloat(inputFields.children[5].value);
-            plotData = [[stepTime - 5, initialValue], [stepTime, initialValue], [stepTime, finalValue], [stepTime + 5, finalValue]];
+            for (i = 0 / sample; i < 10 / sample; i++) {
+                if (i * sample < stepTime) {
+                    plotData[i] = [i * sample, initialValue];
+                } else {
+                    plotData[i] = [i * sample, finalValue];
+                }
+            }
         } else if (plotType == "Ramp") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
             var slope = parseFloat(inputFields.children[1].value);
             var startTime = parseFloat(inputFields.children[3].value);
             var initialValue = parseFloat(inputFields.children[5].value);
-            plotData = [[startTime - 5, initialValue], [startTime, initialValue], [startTime + 5, initialValue + 5 * slope]];
+            for (i = 0 / sample; i < 10 / sample; i++) {
+                if (i * sample < startTime) {
+                    plotData[i] = [i * sample, initialValue];
+                } else {
+                    plotData[i] = [i * sample, (i * sample - startTime) * slope + initialValue];
+                }
+            }
         } else if (plotType == "Sinusoid") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
             var amp = parseFloat(inputFields.children[1].value);
             var bias = parseFloat(inputFields.children[3].value);
             var freq = parseFloat(inputFields.children[5].value);
             var phase = parseFloat(inputFields.children[7].value);
-            var i;
-            var sample = 0.02;
-            for (i = -5 / sample; i < 5 / sample; i++) {
-                plotData[i + 5/sample] = [i * sample, amp * Math.sin(freq * i * sample + phase) + bias];
+            for (i = 0 / sample; i < 10 / sample; i++) {
+                plotData[i] = [i * sample, amp * Math.sin(freq * i * sample + phase) + bias];
             }
         }
         if (plotName == "inputSpeed") {
@@ -284,11 +296,19 @@
             e.preventDefault();
             $.ajax({
                 url: '@Url.Action("Simulate", "Simulation")',
-                data: { test: "This is a test string" },
+                data: {
+                    motor: "Motor 1",
+                    inputSpeed: JSON.stringify(refSpeedPlot.series[0].data),
+                    inputTorque: JSON.stringify(loadTorquePlot.series[0].data),
+                    size: refSpeedPlot.series[0].data.length
+                },
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response.testresult);
+                    console.log(response.motor);
+                    console.log(response.inputSpeed);
+                    console.log(response.inputTorque);
+                    console.log(response.size);
                 }
             })
         });
