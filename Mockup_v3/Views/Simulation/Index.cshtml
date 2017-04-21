@@ -285,6 +285,7 @@
             $.ajax({
                 url: '@Url.Action("Simulate", "Simulation")',
                 data: { test: "This is a test string" },
+                type: "post",
                 dataType: 'json',
                 success: function (response) {
                     console.log(response.testresult);
