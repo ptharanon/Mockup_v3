@@ -25,8 +25,12 @@ namespace Mockup_v3.Controllers
 
             SimulationResults results = new SimulationResults();
             List<List<double[]>> output = results.startSimulation(speedCoordinates, torqueCoordinates, size);
+            List<double[]> currentOuput = output[0];
+            List<double[]> torqueOuput = output[1];
+            List<double[]> speedOuput = output[2];
+            List<double[]> voltageOuput = output[3];
 
-            return Json(new { current = output[0], torque = output[1], speed = output[2], voltage = output[3] });
+            return Json(new { current = output[0], torque = output[1], speed = output[2], voltage = output[3] }, JsonRequestBehavior.AllowGet);
         }
     }
 }

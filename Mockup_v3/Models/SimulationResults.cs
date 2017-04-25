@@ -52,8 +52,8 @@ namespace Mockup_v3.Models
             try
             {
                 IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, size);
-                Marshal.FreeCoTaskMem(pointer);
                 Marshal.Copy(pointer, results, 0, size * 6);
+                Marshal.FreeCoTaskMem(pointer);
                 
                 for(int i=0; i< size; i++)
                 {
