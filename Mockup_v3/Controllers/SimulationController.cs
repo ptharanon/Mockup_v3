@@ -1,5 +1,6 @@
 ﻿using Mockup_v3.Models;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -23,12 +24,9 @@ namespace Mockup_v3.Controllers
             double[][] torqueCoordinates = js.Deserialize<double[][]>(inputTorque);
 
             SimulationResults results = new SimulationResults();
-            //List<List<double[]>> output = results.startSimulation(speedCoordinates, torqueCoordinates, size);
+            List<List<double[]>> output = results.startSimulation(speedCoordinates, torqueCoordinates, size);
 
-            // Perform some manipulation on output here.
-
-            //return Json(new { output = output }, JsonRequestBehavior.AllowGet
-            return Json(new { motor = motor, inputSpeed = inputSpeed, inputTorque = inputTorque, size = size });
+            return Json(new { current = output[0], torque = output[1], speed = output[2], voltage = output[3] });
         }
     }
 }

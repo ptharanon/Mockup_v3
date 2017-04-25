@@ -13,35 +13,15 @@ namespace Mockup_v3.Models
     public class SimulationResults
     {
         //Import compiled DLL of the AC6_example model
-        [DllImport(@"ac6_example_chop_dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
+        [DllImport(@"ac6_example_dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
 
         //Definition for the entry point function (return type pointer - platform specific)
         public static extern IntPtr runSimulation(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
 
-        private int signalSize;
-        private double[] speedInput;
-        private double[] torqueInput;
-        private double[] timeVector;
 
         //Function to process input data into input arrays
         public void processData(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
         {
-            this.signalSize = size;
-
-            int index = 0;
-            for (int i = 0; i < signalSize; i++)
-            {
-                timeVector[index] = speedCoordinates[i][0];
-                speedInput[index] = speedCoordinates[i][1];
-                index++;
-            }
-
-            index = 0;
-            for (int i = 0; i < signalSize; i++)
-            {
-                torqueInput[index] = torqueCoordinates[i][1];
-                index++;
-            }
         }
 
         /*  Function to run the simulation
@@ -50,8 +30,18 @@ namespace Mockup_v3.Models
          */ 
         public List<List<double[]>> startSimulation(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
         {
-            processData(speedCoordinates, torqueCoordinates, size);
-            double[] results = new double[signalSize*6];
+            // Convert array of points to vectors.
+            double[] speedInput = new double[size];
+            double[] torqueInput = new double[size];
+            double[] timeVector = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                timeVector[i] = speedCoordinates[i][0];
+                speedInput[i] = speedCoordinates[i][1];
+                torqueInput[i] = torqueCoordinates[i][1];
+            }
+
+            double[] results = new double[size * 6];
 
             List<List<double[]>> setOfOutputs = new List<List<double[]>>();
             List<double[]> stator_Current = new List<double[]>();
@@ -61,16 +51,16 @@ namespace Mockup_v3.Models
 
             try
             {
-                IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, signalSize);
-                Marshal.Copy(pointer, results, 0, signalSize*6);
+                IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, size);
                 Marshal.FreeCoTaskMem(pointer);
+                Marshal.Copy(pointer, results, 0, size * 6);
                 
-                for(int i=0; i<signalSize; i++)
+                for(int i=0; i< size; i++)
                 {
                     int index_statorCurrent = i;
-                    int index_motorSpeed = i + 1 * signalSize;
-                    int index_motorTorque = i + 3 * signalSize;
-                    int index_DCBusVoltage = i + 5 * signalSize;
+                    int index_motorSpeed = i + 1 * size;
+                    int index_motorTorque = i + 3 * size;
+                    int index_DCBusVoltage = i + 5 * size;
 
                     stator_Current.Add(new double[]{ timeVector[i], results[index_statorCurrent]});
                     motor_Speed.Add(new double[] { timeVector[i], results[index_motorSpeed] });
@@ -81,7 +71,7 @@ namespace Mockup_v3.Models
             }
             catch(Exception)
             {
-                Console.WriteLine("Error during simulation step");
+                System.Diagnostics.Debug.WriteLine("Error during simulation step");
             }
 
             setOfOutputs.Add(stator_Current);
@@ -93,4 +83,6 @@ namespace Mockup_v3.Models
         } 
         
     }
+
+
 }

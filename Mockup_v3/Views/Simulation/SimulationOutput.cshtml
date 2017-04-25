@@ -69,7 +69,7 @@
     var outputDCVPlot;
 
     $(window).load(function () {
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
+        var graph = [[0, 0]];
         outputSCPlot = jQuery.jqplot('outputSCGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
@@ -85,7 +85,6 @@
             }
         });
 
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         outputTorquePlot = jQuery.jqplot('outputTorqueGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
@@ -101,7 +100,6 @@
             }
         });
 
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         outputSpeedPlot = jQuery.jqplot('outputSpeedGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,
@@ -117,7 +115,6 @@
             }
         });
 
-        var graph = [[-1, 0], [0, 0], [0, 1], [1, 1]];
         outputDCVPlot = jQuery.jqplot('outputDCVGraph', [graph], {
             seriesDefaults: {
                 showMarker: false,

@@ -245,13 +245,14 @@
     function updatePlot(plotType, plotName) {
         var plotData = [];
         var i;
-        var sample = 0.02;
+        var sample = 2 * Math.pow(10, -6);
+        var runtime = 0.05;
         if (plotType == "Step") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
             var stepTime = parseFloat(inputFields.children[1].value);
             var initialValue = parseFloat(inputFields.children[3].value);
             var finalValue = parseFloat(inputFields.children[5].value);
-            for (i = 0 / sample; i < 10 / sample; i++) {
+            for (i = 0; i < runtime / sample; i++) {
                 if (i * sample < stepTime) {
                     plotData[i] = [i * sample, initialValue];
                 } else {
@@ -263,7 +264,7 @@
             var slope = parseFloat(inputFields.children[1].value);
             var startTime = parseFloat(inputFields.children[3].value);
             var initialValue = parseFloat(inputFields.children[5].value);
-            for (i = 0 / sample; i < 10 / sample; i++) {
+            for (i = 0; i < runtime / sample; i++) {
                 if (i * sample < startTime) {
                     plotData[i] = [i * sample, initialValue];
                 } else {
@@ -276,8 +277,8 @@
             var bias = parseFloat(inputFields.children[3].value);
             var freq = parseFloat(inputFields.children[5].value);
             var phase = parseFloat(inputFields.children[7].value);
-            for (i = 0 / sample; i < 10 / sample; i++) {
-                plotData[i] = [i * sample, amp * Math.sin(freq * i * sample + phase) + bias];
+            for (i = 0; i < runtime / sample; i++) {
+                plotData[i] = [i * sample, amp * Math.sin(2 * Math.PI * freq * i * sample + phase) + bias];
             }
         }
         if (plotName == "inputSpeed") {
@@ -305,10 +306,20 @@
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response.motor);
-                    console.log(response.inputSpeed);
-                    console.log(response.inputTorque);
-                    console.log(response.size);
+                    outputSCPlot.series[0].data = response.current;
+                    outputTorquePlot.series[0].data = response.torque;
+                    outputSpeedPlot.series[0].data = response.speed;
+                    outputDCVPlot.series[0].data = response.voltage;
+
+                    outputSCPlot.replot({ resetAxes: true });
+                    outputTorquePlot.replot({ resetAxes: true });
+                    outputSpeedPlot.replot({ resetAxes: true });
+                    outputDCVPlot.replot({ resetAxes: true });
+
+                    console.log(response.current);
+                    console.log(response.torque);
+                    console.log(response.speed);
+                    console.log(response.voltage);
                 }
             })
         });
