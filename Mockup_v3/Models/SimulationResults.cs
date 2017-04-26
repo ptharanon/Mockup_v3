@@ -34,10 +34,6 @@ namespace Mockup_v3.Models
             double[] speedInput = new double[size];
             double[] torqueInput = new double[size];
             double[] timeVector = new double[size];
-            int show_steps = Math.Min((int)(2000 * size), 5000);
-            int scale = size / show_steps;
-
-            double[] scaledTime = new double[show_steps];
 
             for (int i = 0; i < size; i++)
             {
@@ -45,8 +41,17 @@ namespace Mockup_v3.Models
                 speedInput[i] = speedCoordinates[i][1];
                 torqueInput[i] = torqueCoordinates[i][1];
             }
+            double simulationTime = timeVector[size - 1] - timeVector[0];
+            int show_steps = Math.Min((int)(4000 * simulationTime), 10000);
+            double sampleTime = timeVector[1] - timeVector[0];
+            double MODEL_SAMPLING = 2E-06;
 
-            double[] results = new double[size * 6];
+            int total_size = (size - 1) * (int) (sampleTime / MODEL_SAMPLING);
+            int scale = total_size / show_steps;
+
+            double[] scaledTime = new double[show_steps];
+
+            double[] results = new double[total_size * 6];
 
             List<List<double[]>> setOfOutputs = new List<List<double[]>>();
             List<double[]> stator_Current = new List<double[]>();
@@ -57,7 +62,7 @@ namespace Mockup_v3.Models
             try
             {
                 IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, size);
-                Marshal.Copy(pointer, results, 0, size * 6);
+                Marshal.Copy(pointer, results, 0, total_size * 6);
                 Marshal.FreeCoTaskMem(pointer);
                 
                 for(int i=0; i< show_steps; i++)
@@ -70,12 +75,12 @@ namespace Mockup_v3.Models
                     */
 
                     int index_statorCurrent = i * scale;
-                    int index_motorSpeed = i*scale + 1 * size;
-                    int index_motorTorque = i*scale + 3 * size;
-                    int index_DCBusVoltage = i*scale + 5 * size;
+                    int index_motorSpeed = i*scale + 1 * total_size;
+                    int index_motorTorque = i*scale + 3 * total_size;
+                    int index_DCBusVoltage = i*scale + 5 * total_size;
 
 
-                    scaledTime[i] = 0.00001 * index_statorCurrent;
+                    scaledTime[i] = 0.00002 * index_statorCurrent;
 
                     stator_Current.Add(new double[] { scaledTime[i], results[index_statorCurrent] });
                     motor_Speed.Add(new double[] { scaledTime[i], results[index_motorSpeed] });
