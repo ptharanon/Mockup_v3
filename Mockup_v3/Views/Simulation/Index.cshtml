@@ -249,45 +249,62 @@
         var runtime = 0.05;
         if (plotType == "Step") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
-            var stepTime = parseFloat(inputFields.children[1].value);
-            var initialValue = parseFloat(inputFields.children[3].value);
-            var finalValue = parseFloat(inputFields.children[5].value);
-            for (i = 0; i < runtime / sample; i++) {
-                if (i * sample < stepTime) {
-                    plotData[i] = [i * sample, initialValue];
-                } else {
-                    plotData[i] = [i * sample, finalValue];
-                }
-            }
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = 0;
+            //for (i = 0; i < runtime / sample; i++) {
+            //    if (i * sample < stepTime) {
+            //        plotData[i] = [i * sample, initialValue];
+            //    } else {
+            //        plotData[i] = [i * sample, finalValue];
+            //    }
+            //}
         } else if (plotType == "Ramp") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
-            var slope = parseFloat(inputFields.children[1].value);
-            var startTime = parseFloat(inputFields.children[3].value);
-            var initialValue = parseFloat(inputFields.children[5].value);
-            for (i = 0; i < runtime / sample; i++) {
-                if (i * sample < startTime) {
-                    plotData[i] = [i * sample, initialValue];
-                } else {
-                    plotData[i] = [i * sample, (i * sample - startTime) * slope + initialValue];
-                }
-            }
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = 0;
+            //for (i = 0; i < runtime / sample; i++) {
+            //    if (i * sample < startTime) {
+            //        plotData[i] = [i * sample, initialValue];
+            //    } else {
+            //        plotData[i] = [i * sample, (i * sample - startTime) * slope + initialValue];
+            //    }
+            //}
         } else if (plotType == "Sinusoid") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
-            var amp = parseFloat(inputFields.children[1].value);
-            var bias = parseFloat(inputFields.children[3].value);
-            var freq = parseFloat(inputFields.children[5].value);
-            var phase = parseFloat(inputFields.children[7].value);
-            for (i = 0; i < runtime / sample; i++) {
-                plotData[i] = [i * sample, amp * Math.sin(2 * Math.PI * freq * i * sample + phase) + bias];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = parseFloat(inputFields.children[7].value);
+            //for (i = 0; i < runtime / sample; i++) {
+            //    plotData[i] = [i * sample, amp * Math.sin(2 * Math.PI * freq * i * sample + phase) + bias];
+            //}
+        }
+        $.ajax({
+            url: '@Url.Action("UpdateGraph", "Simulation")',
+            data: {
+                plot: plotName,
+                type: plotType,
+                param1: param1,
+                param2: param2,
+                param3: param3,
+                param4: param4
+            },
+            type: "post",
+            dataType: 'json',
+            success: function (response) {
+                if (plotName == "inputSpeed") {
+                    refSpeedPlot.series[0].data = response.signal;
+                    refSpeedPlot.replot({ resetAxes: true });
+                } else if (plotName == "inputTorque") {
+                    loadTorquePlot.series[0].data = response.signal;
+                    loadTorquePlot.replot({ resetAxes: true });
+                }
             }
-        }
-        if (plotName == "inputSpeed") {
-            refSpeedPlot.series[0].data = plotData;
-            refSpeedPlot.replot({ resetAxes: true });
-        } else if (plotName == "inputTorque") {
-            loadTorquePlot.series[0].data = plotData;
-            loadTorquePlot.replot({ resetAxes: true });
-        }
+        })
     };
 </script>
 

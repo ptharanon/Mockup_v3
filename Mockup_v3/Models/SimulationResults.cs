@@ -28,7 +28,7 @@ namespace Mockup_v3.Models
          *  Inputs: 2D double array of speed and torque, data size
          *  Outputs: One big list contains 4 different outputs (each output is represented by a list of 2D array)
          */ 
-        public List<List<double[]>> startSimulation(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
+        public List<List<double[]>> startSimulation(List<double[]> speedCoordinates, List<double[]> torqueCoordinates, int size)
         {
             // Convert array of points to vectors.
             double[] speedInput = new double[size];
