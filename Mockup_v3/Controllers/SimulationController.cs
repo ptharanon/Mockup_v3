@@ -1,6 +1,9 @@
-﻿using Mockup_v3.Models;
+﻿using LumenWorks.Framework.IO.Csv;
+using Mockup_v3.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -93,15 +96,30 @@ namespace Mockup_v3.Controllers
 
             return Json(new { signal = signal });
         }
-
-        public List<double[]> GetSpeedPlot()
+        
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
         {
-            return graphs.InputSpeedPoints;
-        }
+            // Verify that the user selected a file
+            if (file != null && file.ContentLength > 0)
+            {
+                Stream stream = file.InputStream;
+                using (CsvReader csvReader = new CsvReader(new StreamReader(stream), true))
+                {
+                    int fieldCount = csvReader.FieldCount;
 
-        public List<double[]> GetTorquePlot()
-        {
-            return graphs.InputTorquePoints;
+                    string[] headers = csvReader.GetFieldHeaders();
+                    while (csvReader.ReadNextRecord())
+                    {
+                        for (int i = 0; i < fieldCount; i++)
+                            System.Diagnostics.Debug.Write(string.Format("{0} = {1};",
+                                          headers[i], csvReader[i]));
+                        System.Diagnostics.Debug.WriteLine("");
+                    }
+                }
+            }
+            // redirect back to the index action to show the form once again
+            return Json(new { });
         }
 
         [HttpPost]
