@@ -350,7 +350,8 @@
     <Content Include="Views\Account\_NewRegisterPartial.cshtml" />
     <Content Include="Views\Simulation\Index.cshtml" />
     <Content Include="Views\Shared\InputFields.cshtml" />
-    <Content Include="Views\Simulation\SimulationOutput.cshtml" />
+    <Content Include="Views\Simulation\Output.cshtml" />
+    <Content Include="Views\Simulation\Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

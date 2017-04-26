@@ -20,53 +20,6 @@ namespace Mockup_v3.Controllers
             return View();
         }
 
-        public List<double[]> GenerateStep(double steptime, double initial, double final, double sample, double endtime)
-        {
-            List<double[]> signal = new List<double[]>();
-            for (int i = 0; i < endtime / sample; i++)
-            {
-                if (i * sample < steptime)
-                {
-                    signal.Add(new double[] { i * sample, initial });
-                }
-                else
-                {
-                    signal.Add(new double[] { i * sample, final });
-                }
-            }
-
-            return signal;
-        }
-
-        public List<double[]> GenerateRamp(double slope, double starttime, double initial, double sample, double endtime)
-        {
-            List<double[]> signal = new List<double[]>();
-            for (int i = 0; i < endtime / sample; i++)
-            {
-                if (i * sample < starttime)
-                {
-                    signal.Add(new double[] { i * sample, initial });
-                }
-                else
-                {
-                    signal.Add(new double[] { i * sample, (i * sample - starttime) * slope + initial });
-                }
-            }
-
-            return signal;
-        }
-
-        public List<double[]> GenerateSinusoid(double amplitude, double bias, double frequency, double phase, double sample, double endtime)
-        {
-            List<double[]> signal = new List<double[]>();
-            for (int i = 0; i < endtime / sample; i++)
-            {
-                signal.Add(new double[] { i * sample, amplitude * Math.Sin(2 * Math.PI * frequency * i * sample + phase) + bias });
-            }
-
-            return signal;
-        }
-
         [HttpPost]
         public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4)
         {
@@ -75,15 +28,15 @@ namespace Mockup_v3.Controllers
             List<double[]> signal = new List<double[]>();
             if (type == "Step")
             {
-                signal = GenerateStep(param1, param2, param3, sample, endtime);
+                signal = graphs.GenerateStep(param1, param2, param3, sample, endtime);
             }
             else if (type == "Ramp")
             {
-                signal = GenerateRamp(param1, param2, param3, sample, endtime);
+                signal = graphs.GenerateRamp(param1, param2, param3, sample, endtime);
             }
             else if (type == "Sinusoid")
             {
-                signal = GenerateSinusoid(param1, param2, param3, param4, sample, endtime);
+                signal = graphs.GenerateSinusoid(param1, param2, param3, param4, sample, endtime);
             }
             if (plot == "inputSpeed")
             {
@@ -131,12 +84,12 @@ namespace Mockup_v3.Controllers
 
             SimulationResults results = new SimulationResults();
             List<List<double[]>> output = results.startSimulation(speedCoordinates, torqueCoordinates, size);
-            List<double[]> currentOuput = output[0];
-            List<double[]> speedOuput = output[1];
-            List<double[]> torqueOuput = output[2];
-            List<double[]> voltageOuput = output[3];
+            List<double[]> currentOutput = output[0];
+            List<double[]> speedOutput = output[1];
+            List<double[]> torqueOutput = output[2];
+            List<double[]> voltageOutput = output[3];
 
-            return Json(new { current = currentOuput, torque = torqueOuput, speed = speedOuput, voltage = voltageOuput }, JsonRequestBehavior.AllowGet);
+            return Json(new { current = currentOutput, torque = torqueOutput, speed = speedOutput, voltage = voltageOutput }, JsonRequestBehavior.AllowGet);
         }
     }
 }
