@@ -23,7 +23,7 @@
     @Html.Partial("Output")
     <!-- Export button -->
     <div style="margin:20px">
-        <button type="button" class="btn btn-primary btn-lg">EXPORT TO CSV</button>
+        <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
     </div>
 </div>
 
@@ -37,18 +37,17 @@
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
-                    outputSCPlot.series[0].data = response.current;
-                    outputTorquePlot.series[0].data = response.torque;
-                    outputSpeedPlot.series[0].data = response.speed;
-                    outputDCVPlot.series[0].data = response.voltage;
-
-                    outputSCPlot.replot({ resetAxes: true });
-                    outputTorquePlot.replot({ resetAxes: true });
-                    outputSpeedPlot.replot({ resetAxes: true });
-                    outputDCVPlot.replot({ resetAxes: true });
+                    drawPlot("outputCurrent");
+                    drawPlot("outputTorque");
+                    drawPlot("outputSpeed");
+                    drawPlot("outputVoltage");
                 }
             })
         });
+    });
+
+    $('#exportcsv-btn').click(function (e) {
+        e.preventDefault();
     });
 
     function drawPlot(plotName) {
@@ -63,6 +62,18 @@
                 } else if (plotName == "inputTorque") {
                     loadTorquePlot.series[0].data = response.signal;
                     loadTorquePlot.replot({ resetAxes: true });
+                } else if (plotName == "outputCurrent") {
+                    outputSCPlot.series[0].data = response.signal;
+                    outputSCPlot.replot({ resetAxes: true });
+                } else if (plotName == "outputTorque") {
+                    outputTorquePlot.series[0].data = response.signal;
+                    outputTorquePlot.replot({ resetAxes: true });
+                } else if (plotName == "outputSpeed") {
+                    outputSpeedPlot.series[0].data = response.signal;
+                    outputSpeedPlot.replot({ resetAxes: true });
+                } else if (plotName == "outputVoltage") {
+                    outputDCVPlot.series[0].data = response.signal;
+                    outputDCVPlot.replot({ resetAxes: true });
                 }
             }
         })

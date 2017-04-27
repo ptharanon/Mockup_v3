@@ -42,7 +42,7 @@ namespace Mockup_v3.Models
                 torqueInput[i] = torqueCoordinates[i][1];
             }
             double simulationTime = timeVector[size - 1] - timeVector[0];
-            int show_steps = Math.Min((int)(4000 * simulationTime), 10000);
+            int show_steps = size;// Math.Min((int)(4000 * simulationTime), 10000);
             double sampleTime = timeVector[1] - timeVector[0];
             double MODEL_SAMPLING = 2E-06;
 
