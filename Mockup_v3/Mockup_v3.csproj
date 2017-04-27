@@ -351,7 +351,9 @@
     <Content Include="Views\Simulation\Index.cshtml" />
     <Content Include="Views\Shared\InputFields.cshtml" />
     <Content Include="Views\Simulation\Output.cshtml" />
-    <Content Include="Views\Simulation\Input.cshtml" />
+    <Content Include="Views\Simulation\InputSpeed.cshtml" />
+    <Content Include="Views\Simulation\MotorSelection.cshtml" />
+    <Content Include="Views\Simulation\InputTorque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

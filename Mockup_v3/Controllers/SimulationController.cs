@@ -3,6 +3,7 @@ using Mockup_v3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -12,7 +13,7 @@ namespace Mockup_v3.Controllers
     [Authorize]
     public class SimulationController : Controller
     {
-        Graphs graphs = new Graphs();
+        private static Graphs graphs = new Graphs();
 
         // GET: Simulation
         public ActionResult Index()
@@ -51,39 +52,55 @@ namespace Mockup_v3.Controllers
         }
         
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload(HttpPostedFileBase file, String plotname)
         {
+            List<double[]> signal = new List<double[]>();
+
             // Verify that the user selected a file
             if (file != null && file.ContentLength > 0)
             {
                 Stream stream = file.InputStream;
                 using (CsvReader csvReader = new CsvReader(new StreamReader(stream), true))
                 {
-                    int fieldCount = csvReader.FieldCount;
-
                     string[] headers = csvReader.GetFieldHeaders();
                     while (csvReader.ReadNextRecord())
                     {
-                        for (int i = 0; i < fieldCount; i++)
-                            System.Diagnostics.Debug.Write(string.Format("{0} = {1};",
-                                          headers[i], csvReader[i]));
-                        System.Diagnostics.Debug.WriteLine("");
+                        signal.Add(new double[] { Double.Parse(csvReader[0]), Double.Parse(csvReader[1]) });
                     }
                 }
             }
-            // redirect back to the index action to show the form once again
-            return Json(new { });
+            if (plotname == "inputSpeed")
+            {
+                graphs.InputSpeedPoints = signal;
+            }
+            else if (plotname == "inputTorque")
+            {
+                graphs.InputTorquePoints = signal;
+            }
+
+            return Json(new { signal = signal });
+        }
+
+        [HttpGet]
+        public ActionResult GetPlotData(String plotname)
+        {
+            List<double[]> signal = new List<double[]>();
+            if (plotname == "inputSpeed")
+            {
+                signal = graphs.InputSpeedPoints;
+            }
+            else if (plotname == "inputTorque")
+            {
+                signal = graphs.InputTorquePoints;
+            }
+            return Json(new { signal = signal }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Simulate(String motor, String inputSpeed, String inputTorque, int size)
+        public ActionResult Simulate(String motor)
         {
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            List<double[]> speedCoordinates = js.Deserialize<List<double[]>>(inputSpeed);
-            List<double[]> torqueCoordinates = js.Deserialize<List<double[]>>(inputTorque);
-
             SimulationResults results = new SimulationResults();
-            List<List<double[]>> output = results.startSimulation(speedCoordinates, torqueCoordinates, size);
+            List<List<double[]>> output = results.startSimulation(graphs.InputSpeedPoints, graphs.InputTorquePoints, graphs.InputTorquePoints.Count);
             List<double[]> currentOutput = output[0];
             List<double[]> speedOutput = output[1];
             List<double[]> torqueOutput = output[2];

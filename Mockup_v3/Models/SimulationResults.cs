@@ -80,7 +80,7 @@ namespace Mockup_v3.Models
                     int index_DCBusVoltage = i*scale + 5 * total_size;
 
 
-                    scaledTime[i] = 0.00002 * index_statorCurrent;
+                    scaledTime[i] = MODEL_SAMPLING * index_statorCurrent;
 
                     stator_Current.Add(new double[] { scaledTime[i], results[index_statorCurrent] });
                     motor_Speed.Add(new double[] { scaledTime[i], results[index_motorSpeed] });

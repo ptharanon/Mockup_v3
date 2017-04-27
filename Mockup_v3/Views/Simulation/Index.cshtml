@@ -7,10 +7,15 @@
 
 <!-- Input -->
 <div class="inputs col-md-6" style="text-align:center">
-    @Html.Partial("Input")
-    <!-- Simulate button -->
-    <div style="margin:20px">
-        <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
+    <h2 style="text-align:center">Input</h2><br />
+    <div id="inputForm" style="text-align:center">
+        @Html.Partial("MotorSelection")
+        @Html.Partial("InputSpeed")
+        @Html.Partial("InputTorque")
+        <!-- Simulate button -->
+        <div style="margin:20px">
+            <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
+        </div>
     </div>
 </div>
 <!-- Output -->
@@ -28,12 +33,7 @@
             e.preventDefault();
             $.ajax({
                 url: '@Url.Action("Simulate", "Simulation")',
-                data: {
-                    motor: "Motor 1",
-                    inputSpeed: JSON.stringify(refSpeedPlot.series[0].data),
-                    inputTorque: JSON.stringify(loadTorquePlot.series[0].data),
-                    size: refSpeedPlot.series[0].data.length
-                },
+                data: { motor: "Motor 1" },
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
@@ -50,4 +50,21 @@
             })
         });
     });
+
+    function drawPlot(plotName) {
+        $.ajax({
+            url: '@Url.Action("GetPlotData", "Simulation")',
+            data: { plotname: plotName },
+            type: "get",
+            success: function (response) {
+                if (plotName == "inputSpeed") {
+                    refSpeedPlot.series[0].data = response.signal;
+                    refSpeedPlot.replot({ resetAxes: true });
+                } else if (plotName == "inputTorque") {
+                    loadTorquePlot.series[0].data = response.signal;
+                    loadTorquePlot.replot({ resetAxes: true });
+                }
+            }
+        })
+    }
 </script>
