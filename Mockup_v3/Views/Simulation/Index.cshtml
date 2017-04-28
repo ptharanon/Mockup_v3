@@ -31,6 +31,7 @@
     $(document).ready(function () {
         $('#simulate-btn').click(function (e) {
             e.preventDefault();
+            document.getElementById('simulate-btn').textContent = "Loading...";
             $.ajax({
                 url: '@Url.Action("Simulate", "Simulation")',
                 data: { motor: "Motor 1" },
@@ -41,6 +42,7 @@
                     drawPlot("outputTorque");
                     drawPlot("outputSpeed");
                     drawPlot("outputVoltage");
+                    document.getElementById('simulate-btn').textContent = "SIMULATE!";
                 }
             })
         });

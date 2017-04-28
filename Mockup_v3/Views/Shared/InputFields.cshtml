@@ -50,19 +50,21 @@
 <script>
     function UploadFile(file, plotName)
     {
+        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Loading...";
         var data = new FormData();
         data.append("file", file);
         data.append("plotname", plotName);
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '@Url.Action("Upload", "Simulation")', true);
-        xhr.addEventListener("load", function (event) { UploadComplete(event, plotName); }, false);
+        xhr.addEventListener("load", function (event) { UploadComplete(event, plotName, file.name); }, false);
         xhr.addEventListener("error", function (event) { UploadFailed(event); }, false);
         xhr.send(data);
     }
 
-    function UploadComplete(event, plotName) {
+    function UploadComplete(event, plotName, fileName) {
         if (event.target.status == 200) {
             drawPlot(plotName);
+            $(document.getElementById(plotName)).find('#filename')[0].textContent = fileName;
         }
         else {
             alert("Error Uploading File");
@@ -81,7 +83,6 @@
 
     var openFile = function (event) {
         event.preventDefault();
-        event.path[1].children.filename.textContent = event.path[0].files[0].name;
         var f = event.path[0].files[0];
         UploadFile(f, event.path[5].id);
         //var f = event.path[0].files[0];
