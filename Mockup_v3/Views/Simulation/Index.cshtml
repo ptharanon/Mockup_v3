@@ -10,8 +10,8 @@
     <h2 style="text-align:center">Input</h2><br />
     <div id="inputForm" style="text-align:center">
         @Html.Partial("MotorSelection")
-        @Html.Partial("InputSpeed")
-        @Html.Partial("InputTorque")
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
         <!-- Simulate button -->
         <div style="margin:20px">
             <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
@@ -80,4 +80,44 @@
             }
         })
     }
+</script>
+
+<script type="text/javascript">
+    var refSpeedPlot;
+    var loadTorquePlot;
+
+    $(window).load(function () {
+        var graph = [[0, 0]];
+        refSpeedPlot = jQuery.jqplot('refSpeedGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
+            },
+            cursor: {
+                show: true
+            }
+        });
+        loadTorquePlot = jQuery.jqplot('loadTorqueGraph', [graph], {
+            seriesDefaults: {
+                showMarker: false,
+                pointLabels: { show: false, edgeTolerance: 5 }
+            },
+            axes: {
+                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
+                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
+            },
+            cursor: {
+                show: true
+            }
+        });
+    });
+
+    $(window).resize(function () {
+        refSpeedPlot.replot();
+        loadTorquePlot.replot();
+    });
 </script>

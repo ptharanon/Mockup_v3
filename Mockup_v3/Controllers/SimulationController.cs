@@ -139,22 +139,20 @@ namespace Mockup_v3.Controllers
 
             StringWriter sw = new StringWriter();
 
-            sw.WriteLine("\"Time\",\"Input Speed\",\"Load Torque\",\"Stator Current\",\"Torque\",\"Speed\",\"DC Voltage\"");
+            sw.WriteLine("\"Time\",\"Stator Current\",\"Torque\",\"Speed\",\"DC Voltage\"");
 
             Response.ClearContent();
             Response.AddHeader("content-disposition", "attachment;filename=Simulation.csv");
             Response.ContentType = "text/csv";
-
-            for (int i = 0; i < graphs.InputSpeedPoints.Count; i++)
+            
+            for (int i = 0; i < graphs.OutputCurrentPoints.Count; i++)
             {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\"",
-                                           graphs.InputSpeedPoints[i][0],
-                                           graphs.InputSpeedPoints[i][1],
-                                           graphs.InputTorquePoints[i][1],
-                                           graphs.OutputCurrentPoints[i][1],
-                                           graphs.OutputSpeedPoints[i][1],
-                                           graphs.OutputTorquePoints[i][1],
-                                           graphs.OutputVoltagePoints[i][1]));
+                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\"",
+                                            graphs.OutputCurrentPoints[i][0],
+                                            graphs.OutputCurrentPoints[i][1],
+                                            graphs.OutputSpeedPoints[i][1],
+                                            graphs.OutputTorquePoints[i][1],
+                                            graphs.OutputVoltagePoints[i][1]));
             }
 
             Response.Write(sw.ToString());

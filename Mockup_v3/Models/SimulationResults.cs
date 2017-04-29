@@ -42,14 +42,14 @@ namespace Mockup_v3.Models
                 torqueInput[i] = torqueCoordinates[i][1];
             }
             double simulationTime = timeVector[size - 1] - timeVector[0];
-            int show_steps = size;// Math.Min((int)(4000 * simulationTime), 10000);
+            //int size = Math.Min((int)(4000 * simulationTime), 10000);
             double sampleTime = timeVector[1] - timeVector[0];
             double MODEL_SAMPLING = 2E-06;
 
             int total_size = (size - 1) * (int) (sampleTime / MODEL_SAMPLING);
-            int scale = total_size / show_steps;
+            int scale = total_size / size;
 
-            double[] scaledTime = new double[show_steps];
+            double[] scaledTime = new double[total_size];
 
             double[] results = new double[total_size * 6];
 
@@ -64,8 +64,8 @@ namespace Mockup_v3.Models
                 IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, size);
                 Marshal.Copy(pointer, results, 0, total_size * 6);
                 Marshal.FreeCoTaskMem(pointer);
-                
-                for(int i=0; i< show_steps; i++)
+
+                for (int i = 0; i < total_size; i++)
                 {
                     /*
                     int index_statorCurrent = i;
@@ -74,10 +74,10 @@ namespace Mockup_v3.Models
                     int index_DCBusVoltage = i + 5 * size;
                     */
 
-                    int index_statorCurrent = i * scale;
-                    int index_motorSpeed = i*scale + 1 * total_size;
-                    int index_motorTorque = i*scale + 3 * total_size;
-                    int index_DCBusVoltage = i*scale + 5 * total_size;
+                    int index_statorCurrent = i;
+                    int index_motorSpeed = i + 1 * total_size;
+                    int index_motorTorque = i + 3 * total_size;
+                    int index_DCBusVoltage = i + 5 * total_size;
 
 
                     scaledTime[i] = MODEL_SAMPLING * index_statorCurrent;
