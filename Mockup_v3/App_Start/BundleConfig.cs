@@ -40,8 +40,8 @@ namespace Mockup_v3
                       "~/Content/bootstrap.min.css",
                       "~/Content/About.css",
                       "~/Content/animate.css",
-                      "~/Content/simulation.css",
                       "~/Content/style.css",
+                      "~/Content/simulation.css",
                       "~/Scripts/jqPlot/jquery.jqplot.css"));
 
             bundles.Add(new StyleBundle("~/Content/Color").Include(

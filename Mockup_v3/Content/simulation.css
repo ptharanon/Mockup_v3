@@ -8,6 +8,11 @@
     margin: 10px;
 }
 
+li {
+    cursor: pointer;
+    cursor: hand;
+}
+
 .navbar-text.navbar-text-custom{
     font-size:12px;
 }

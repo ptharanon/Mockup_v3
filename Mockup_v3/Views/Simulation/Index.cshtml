@@ -4,28 +4,28 @@
 }
 
 <section class="header" style="margin-bottom:40px"></section>
-
-<!-- Input -->
-<div class="inputs col-md-6" style="text-align:center">
-    <h2 style="text-align:center">Input</h2><br />
-    <div id="inputForm" style="text-align:center">
-        @Html.Partial("MotorSelection")
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
-        <!-- Simulate button -->
-        <div style="margin:20px">
-            <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
+    <!-- Input -->
+    <div class="inputs col-md-6" style="text-align:center">
+        <h2 style="text-align:center">Input</h2><br />
+        <div id="inputForm" style="text-align:center">
+            @Html.Partial("MotorSelection")
+            @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
+            @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
+            <!-- Simulate button -->
+            <div style="margin:20px">
+                <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
+            </div>
+            <hr />
         </div>
     </div>
-</div>
-<!-- Output -->
-<div class="outputs col-md-6" style="text-align:center">
-    @Html.Partial("Output")
-    <!-- Export button -->
-    <div style="margin:20px">
-        <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
+    <!-- Output -->
+    <div class="outputs col-md-6" style="text-align:center">
+        @Html.Partial("Output")
+        <!-- Export button -->
+        <div style="margin:20px">
+            <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
+        </div>
     </div>
-</div>
 
 <script>
     $(document).ready(function () {
