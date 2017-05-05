@@ -25,8 +25,10 @@ namespace Mockup_v3.Controllers
         public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4)
         {
             double sample = 2 * Math.Pow(10, -5);
-            double endtime = 1;
-            List<double[]> signal = new List<double[]>();
+            double endtime = 2;
+            List<List<double>> signal = new List<List<double>>();
+            signal.Add(new List<double>());
+            signal.Add(new List<double>());
             if (type == "Step")
             {
                 signal = graphs.GenerateStep(param1, param2, param3, sample, endtime);
@@ -41,11 +43,11 @@ namespace Mockup_v3.Controllers
             }
             if (plot == "inputSpeed")
             {
-                graphs.InputSpeedPoints = signal;
+                graphs.InputSpeedTrace = signal;
             }
             else if (plot == "inputTorque")
             {
-                graphs.InputTorquePoints = signal;
+                graphs.InputTorqueTrace = signal;
             }
 
             return Json(new { done = true });
@@ -54,7 +56,9 @@ namespace Mockup_v3.Controllers
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file, String plotname)
         {
-            List<double[]> signal = new List<double[]>();
+            List<List<double>> signal = new List<List<double>>();
+            signal.Add(new List<double>());
+            signal.Add(new List<double>());
 
             // Verify that the user selected a file
             if (file != null && file.ContentLength > 0)
@@ -65,17 +69,18 @@ namespace Mockup_v3.Controllers
                     string[] headers = csvReader.GetFieldHeaders();
                     while (csvReader.ReadNextRecord())
                     {
-                        signal.Add(new double[] { Double.Parse(csvReader[0]), Double.Parse(csvReader[1]) });
+                        signal[0].Add(Double.Parse(csvReader[0]));
+                        signal[1].Add(Double.Parse(csvReader[1]));
                     }
                 }
             }
             if (plotname == "inputSpeed")
             {
-                graphs.InputSpeedPoints = signal;
+                graphs.InputSpeedTrace = signal;
             }
             else if (plotname == "inputTorque")
             {
-                graphs.InputTorquePoints = signal;
+                graphs.InputTorqueTrace = signal;
             }
 
             return Json(new { done = true });
@@ -84,38 +89,41 @@ namespace Mockup_v3.Controllers
         [HttpGet]
         public ActionResult GetPlotData(String plotname)
         {
-            List<double[]> full_signal = new List<double[]>();
-            List<double[]> signal = new List<double[]>();
+            List<List<double>> full_signal = new List<List<double>>();
+            List<List<double>> signal = new List<List<double>>();
+            signal.Add(new List<double>());
+            signal.Add(new List<double>());
             int scale_factor = 100;
             if (plotname == "inputSpeed")
             {
-                full_signal = graphs.InputSpeedPoints;
+                full_signal = graphs.InputSpeedTrace;
             }
             else if (plotname == "inputTorque")
             {
-                full_signal = graphs.InputTorquePoints;
+                full_signal = graphs.InputTorqueTrace;
             }
             else if (plotname == "outputCurrent")
             {
-                full_signal = graphs.OutputCurrentPoints;
+                full_signal = graphs.OutputCurrentTrace;
             }
             else if (plotname == "outputTorque")
             {
-                full_signal = graphs.OutputTorquePoints;
+                full_signal = graphs.OutputTorqueTrace;
             }
             else if (plotname == "outputSpeed")
             {
-                full_signal = graphs.OutputSpeedPoints;
+                full_signal = graphs.OutputSpeedTrace;
             }
             else if (plotname == "outputVoltage")
             {
-                full_signal = graphs.OutputVoltagePoints;
+                full_signal = graphs.OutputVoltageTrace;
             }
-            for (int i = 0; i < full_signal.Count; i++)
+            for (int i = 0; i < full_signal[0].Count; i++)
             {
                 if (i % scale_factor == 0)
                 {
-                    signal.Add(full_signal[i]);
+                    signal[0].Add(full_signal[0][i]);
+                    signal[1].Add(full_signal[1][i]);
                 }
             }
             return Json(new { signal = signal }, JsonRequestBehavior.AllowGet);
@@ -125,11 +133,11 @@ namespace Mockup_v3.Controllers
         public ActionResult Simulate(String motor)
         {
             SimulationResults results = new SimulationResults();
-            List<List<double[]>> output = results.startSimulation(graphs.InputSpeedPoints, graphs.InputTorquePoints, graphs.InputTorquePoints.Count);
-            graphs.OutputCurrentPoints = output[0];
-            graphs.OutputSpeedPoints = output[1];
-            graphs.OutputTorquePoints = output[2];
-            graphs.OutputVoltagePoints = output[3];
+            List<List<List<double>>> output = results.startSimulation(graphs.InputSpeedTrace, graphs.InputTorqueTrace, graphs.InputTorqueTrace[0].Count);
+            graphs.OutputCurrentTrace = output[0];
+            graphs.OutputSpeedTrace = output[1];
+            graphs.OutputTorqueTrace = output[2];
+            graphs.OutputVoltageTrace = output[3];
 
             return Json(new { done = true }, JsonRequestBehavior.AllowGet);
         }
@@ -145,14 +153,14 @@ namespace Mockup_v3.Controllers
             Response.AddHeader("content-disposition", "attachment;filename=Simulation.csv");
             Response.ContentType = "text/csv";
             
-            for (int i = 0; i < graphs.OutputCurrentPoints.Count; i++)
+            for (int i = 0; i < graphs.OutputCurrentTrace.Count; i++)
             {
                 sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\"",
-                                            graphs.OutputCurrentPoints[i][0],
-                                            graphs.OutputCurrentPoints[i][1],
-                                            graphs.OutputSpeedPoints[i][1],
-                                            graphs.OutputTorquePoints[i][1],
-                                            graphs.OutputVoltagePoints[i][1]));
+                                            graphs.OutputCurrentTrace[0][i],
+                                            graphs.OutputCurrentTrace[1][i],
+                                            graphs.OutputSpeedTrace[1][i],
+                                            graphs.OutputTorqueTrace[1][i],
+                                            graphs.OutputVoltageTrace[1][i]));
             }
 
             Response.Write(sw.ToString());

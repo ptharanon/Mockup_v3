@@ -28,7 +28,7 @@ namespace Mockup_v3.Models
          *  Inputs: 2D double array of speed and torque, data size
          *  Outputs: One big list contains 4 different outputs (each output is represented by a list of 2D array)
          */ 
-        public List<List<double[]>> startSimulation(List<double[]> speedCoordinates, List<double[]> torqueCoordinates, int size)
+        public List<List<List<double>>> startSimulation(List<List<double>> speedCoordinates, List<List<double>> torqueCoordinates, int size)
         {
             // Convert array of points to vectors.
             double[] speedInput = new double[size];
@@ -37,9 +37,9 @@ namespace Mockup_v3.Models
 
             for (int i = 0; i < size; i++)
             {
-                timeVector[i] = speedCoordinates[i][0];
-                speedInput[i] = speedCoordinates[i][1];
-                torqueInput[i] = torqueCoordinates[i][1];
+                timeVector[i] = speedCoordinates[0][i];
+                speedInput[i] = speedCoordinates[1][i];
+                torqueInput[i] = torqueCoordinates[1][i];
             }
             double simulationTime = timeVector[size - 1] - timeVector[0];
             //int size = Math.Min((int)(4000 * simulationTime), 10000);
@@ -53,11 +53,19 @@ namespace Mockup_v3.Models
 
             double[] results = new double[total_size * 6];
 
-            List<List<double[]>> setOfOutputs = new List<List<double[]>>();
-            List<double[]> stator_Current = new List<double[]>();
-            List<double[]> motor_Speed = new List<double[]>();
-            List<double[]> motor_Torque = new List<double[]>();
-            List<double[]> DCBus_Voltage = new List<double[]>();
+            List<List<List<double>>> setOfOutputs = new List<List<List<double>>>();
+            List<List<double>> stator_Current = new List<List<double>>();
+            stator_Current.Add(new List<double>());
+            stator_Current.Add(new List<double>());
+            List<List<double>> motor_Speed = new List<List<double>>();
+            motor_Speed.Add(new List<double>());
+            motor_Speed.Add(new List<double>());
+            List<List<double>> motor_Torque = new List<List<double>>();
+            motor_Torque.Add(new List<double>());
+            motor_Torque.Add(new List<double>());
+            List<List<double>> DCBus_Voltage = new List<List<double>>();
+            DCBus_Voltage.Add(new List<double>());
+            DCBus_Voltage.Add(new List<double>());
 
             try
             {
@@ -82,10 +90,19 @@ namespace Mockup_v3.Models
 
                     scaledTime[i] = MODEL_SAMPLING * index_statorCurrent;
 
-                    stator_Current.Add(new double[] { scaledTime[i], results[index_statorCurrent] });
-                    motor_Speed.Add(new double[] { scaledTime[i], results[index_motorSpeed] });
-                    motor_Torque.Add(new double[] { scaledTime[i], results[index_motorTorque] });
-                    DCBus_Voltage.Add(new double[] { scaledTime[i], results[index_DCBusVoltage] });
+                    stator_Current[0].Add(scaledTime[i]);
+                    stator_Current[1].Add(results[index_statorCurrent]);
+                    motor_Speed[0].Add(scaledTime[i]);
+                    motor_Speed[1].Add(results[index_motorSpeed]);
+                    motor_Torque[0].Add(scaledTime[i]);
+                    motor_Torque[1].Add(results[index_motorTorque]);
+                    DCBus_Voltage[0].Add(scaledTime[i]);
+                    DCBus_Voltage[1].Add(results[index_DCBusVoltage]);
+
+                    //stator_Current.Add(new double[] { scaledTime[i], results[index_statorCurrent] });
+                    //motor_Speed.Add(new double[] { scaledTime[i], results[index_motorSpeed] });
+                    //motor_Torque.Add(new double[] { scaledTime[i], results[index_motorTorque] });
+                    //DCBus_Voltage.Add(new double[] { scaledTime[i], results[index_DCBusVoltage] });
 
                     /*
                     stator_Current.Add(new double[]{ timeVector[i], results[index_statorCurrent]});

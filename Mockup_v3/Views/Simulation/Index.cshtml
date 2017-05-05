@@ -4,28 +4,60 @@
 }
 
 <section class="header" style="margin-bottom:40px"></section>
-    <!-- Input -->
-    <div class="inputs col-md-6" style="text-align:center">
-        <h2 style="text-align:center">Input</h2><br />
-        <div id="inputForm" style="text-align:center">
-            @Html.Partial("MotorSelection")
-            @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
-            @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
-            <!-- Simulate button -->
-            <div style="margin:20px">
-                <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
-            </div>
-            <hr />
-        </div>
-    </div>
-    <!-- Output -->
-    <div class="outputs col-md-6" style="text-align:center">
-        @Html.Partial("Output")
-        <!-- Export button -->
+<!-- Input -->
+<div class="inputs col-md-6" style="text-align:center">
+    <h2 style="text-align:center">Input</h2><br />
+    <div id="inputForm" style="text-align:center">
+        @Html.Partial("MotorSelection")
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
+        <!-- Simulate button -->
         <div style="margin:20px">
-            <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
+            <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
         </div>
+        <hr />
     </div>
+</div>
+<!-- Output -->
+<div class="outputs col-md-6" style="text-align:center">
+    @Html.Partial("Output")
+    <!-- Export button -->
+    <div style="margin:20px">
+        <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
+    </div>
+</div>
+
+<script>
+    var layout = {
+        xaxis: {
+            title: 'Time',
+            showticklabels: true
+        },
+        yaxis: {
+            showticklabels: true
+        },
+        margin: {
+            autosize: true,
+            t: 0,
+            b: 40,
+            l: 40,
+            r: 0
+        },
+        hovermode: 'closest'
+    };
+    var data = [{
+        x: [0],
+        y: [0]
+    }];
+    Plotly.plot('refSpeedGraph', data, layout, { showLink: false });
+    Plotly.plot('loadTorqueGraph', data, layout, { showLink: false });
+    Plotly.plot('outputSCGraph', data, layout, { showLink: false });
+    Plotly.plot('outputTorqueGraph', data, layout, { showLink: false });
+    Plotly.plot('outputSpeedGraph', data, layout, { showLink: false });
+    Plotly.plot('outputDCVGraph', data, layout, { showLink: false });
+    var plotDiv = document.getElementById('refSpeedGraph');
+    var plotData = plotDiv.data;
+</script>
 
 <script>
     $(document).ready(function () {
@@ -59,23 +91,23 @@
             type: "get",
             success: function (response) {
                 if (plotName == "inputSpeed") {
-                    refSpeedPlot.series[0].data = response.signal;
-                    refSpeedPlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(refSpeedGraph, 0);
+                    Plotly.addTraces(refSpeedGraph, { x: response.signal[0], y: response.signal[1] });
                 } else if (plotName == "inputTorque") {
-                    loadTorquePlot.series[0].data = response.signal;
-                    loadTorquePlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(loadTorqueGraph, 0);
+                    Plotly.addTraces(loadTorqueGraph, { x: response.signal[0], y: response.signal[1] });
                 } else if (plotName == "outputCurrent") {
-                    outputSCPlot.series[0].data = response.signal;
-                    outputSCPlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(outputSCGraph, 0);
+                    Plotly.addTraces(outputSCGraph, { x: response.signal[0], y: response.signal[1] });
                 } else if (plotName == "outputTorque") {
-                    outputTorquePlot.series[0].data = response.signal;
-                    outputTorquePlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(outputTorqueGraph, 0);
+                    Plotly.addTraces(outputTorqueGraph, { x: response.signal[0], y: response.signal[1] });
                 } else if (plotName == "outputSpeed") {
-                    outputSpeedPlot.series[0].data = response.signal;
-                    outputSpeedPlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(outputSpeedGraph, 0);
+                    Plotly.addTraces(outputSpeedGraph, { x: response.signal[0], y: response.signal[1] });
                 } else if (plotName == "outputVoltage") {
-                    outputDCVPlot.series[0].data = response.signal;
-                    outputDCVPlot.replot({ resetAxes: true });
+                    Plotly.deleteTraces(outputDCVGraph, 0);
+                    Plotly.addTraces(outputDCVGraph, { x: response.signal[0], y: response.signal[1] });
                 }
             }
         })
@@ -83,41 +115,8 @@
 </script>
 
 <script type="text/javascript">
-    var refSpeedPlot;
-    var loadTorquePlot;
-
-    $(window).load(function () {
-        var graph = [[0, 0]];
-        refSpeedPlot = jQuery.jqplot('refSpeedGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true
-            }
-        });
-        loadTorquePlot = jQuery.jqplot('loadTorqueGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true
-            }
-        });
-    });
-
     $(window).resize(function () {
-        refSpeedPlot.replot();
-        loadTorquePlot.replot();
+        Plotly.Plots.resize(refSpeedGraph);
+        Plotly.Plots.resize(loadTorqueGraph);
     });
 </script>

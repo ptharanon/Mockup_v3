@@ -11,7 +11,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <div id="outputSCGraph" style="height:250px"></div>
+        <div id="outputSCGraph" style="height:300px"></div>
     </div>
 </div>
 <!-- Torque -->
@@ -25,7 +25,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <div id="outputTorqueGraph" style="height:250px"></div>
+        <div id="outputTorqueGraph" style="height:300px"></div>
     </div>
 </div>
 <!-- Speed -->
@@ -39,7 +39,7 @@
         </ul>
     </div>
     <div class="panel-body">
-        <div id="outputSpeedGraph" style="height:250px"></div>
+        <div id="outputSpeedGraph" style="height:300px"></div>
     </div>
 </div>
 <!-- DC bus voltage -->
@@ -53,85 +53,6 @@
         </ul>
     </div>
     <div class="panel-body">
-        <div id="outputDCVGraph" style="height:250px"></div>
+        <div id="outputDCVGraph" style="height:300px"></div>
     </div>
 </div>
-
-
-
-<script type="text/javascript">
-    var outputSCPlot;
-    var outputTorquePlot;
-    var outputSpeedPlot;
-    var outputDCVPlot;
-
-    $(window).load(function () {
-        var graph = [[0, 0]];
-        outputSCPlot = jQuery.jqplot('outputSCGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "A", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true,
-                zoom: true
-            }
-        });
-
-        outputTorquePlot = jQuery.jqplot('outputTorqueGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "Nm", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true,
-                zoom: true
-            }
-        });
-
-        outputSpeedPlot = jQuery.jqplot('outputSpeedGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "rad/s", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true,
-                zoom: true
-            }
-        });
-
-        outputDCVPlot = jQuery.jqplot('outputDCVGraph', [graph], {
-            seriesDefaults: {
-                showMarker: false,
-                pointLabels: { show: false, edgeTolerance: 5 }
-            },
-            axes: {
-                xaxis: { label: "sec", labelRenderer: $.jqplot.CanvasAxisLabelRenderer },
-                yaxis: { label: "V", labelRenderer: $.jqplot.CanvasAxisLabelRenderer }
-            },
-            cursor: {
-                show: true,
-                zoom: true
-            }
-        });
-    });
-
-    $(window).resize(function () {
-        outputSCPlot.replot();
-        outputTorquePlot.replot();
-        outputSpeedPlot.replot();
-        outputDCVPlot.replot();
-    });
-</script>
