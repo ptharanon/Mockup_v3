@@ -13,7 +13,7 @@ namespace Mockup_v3.Models
     public class SimulationResults
     {
         //Import compiled DLL of the AC6_example model
-        [DllImport(@"DLL_AC6", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
+        [DllImport(@"ac6_example_dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
 
         //Definition for the entry point function (return type pointer - platform specific)
         public static extern IntPtr runSimulation(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);

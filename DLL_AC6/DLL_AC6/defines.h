@@ -12,5 +12,5 @@
 #define ONESTEPFCN 1
 #define TERMFCN 1
 #define MULTI_INSTANCE_CODE 1
-#define TID01EQ 0
+#define TID01EQ 1
 #define MODEL_SAMPLETIME 2E-06
