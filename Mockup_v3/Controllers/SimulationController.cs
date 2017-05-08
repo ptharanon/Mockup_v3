@@ -7,6 +7,9 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Linq;
+using MotorLibrary.Helper;
+using MotorLibrary.Helper.ExternalModel;
 
 namespace Mockup_v3.Controllers
 {
@@ -18,7 +21,10 @@ namespace Mockup_v3.Controllers
         // GET: Simulation
         public ActionResult Index()
         {
-            return View();
+            XMLReader readXML = new XMLReader();
+            var data = readXML.RetrunListOfProducts();
+
+            return View(data.ToList());
         }
 
         [HttpPost]

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<Models>
+  <Model>
+    <ModelName> MA60-0630-A </ModelName>
+    <Resistance> 0.2 </Resistance>
+    <D_Axis_Inductance> 8.5e-3 </D_Axis_Inductance>
+    <Q_Axis_Inductance> 8.5e-3 </Q_Axis_Inductance>
+    <FluxConstant> 0.175 </FluxConstant>
+    <Inertia> 0.089 </Inertia>
+    <Friction> 0.005 </Friction>
+    <PolePair> 4 </PolePair>
+    <InitialSpeed> 0 </InitialSpeed>
+    <InitialAngle> 0 </InitialAngle>
+    <InitialCurrentA> 0 </InitialCurrentA>
+    <InitialCurrentB> 0 </InitialCurrentB>
+  </Model>
+
+  <Model>
+    <ModelName> MA80-2430-A </ModelName>
+    <Resistance> 0.2 </Resistance>
+    <D_Axis_Inductance> 8.5e-3 </D_Axis_Inductance>
+    <Q_Axis_Inductance> 8.5e-3 </Q_Axis_Inductance>
+    <FluxConstant> 0.175 </FluxConstant>
+    <Inertia> 0.089 </Inertia>
+    <Friction> 0.005 </Friction>
+    <PolePair> 4 </PolePair>
+    <InitialSpeed> 0 </InitialSpeed>
+    <InitialAngle> 0 </InitialAngle>
+    <InitialCurrentA> 0 </InitialCurrentA>
+    <InitialCurrentB> 0 </InitialCurrentB>
+  </Model>
+
+  <Model>
+    <ModelName> MA130-4830-A </ModelName>
+    <Resistance> 0.2 </Resistance>
+    <D_Axis_Inductance> 8.5e-3 </D_Axis_Inductance>
+    <Q_Axis_Inductance> 8.5e-3 </Q_Axis_Inductance>
+    <FluxConstant> 0.175 </FluxConstant>
+    <Inertia> 0.089 </Inertia>
+    <Friction> 0.005 </Friction>
+    <PolePair> 4 </PolePair>
+    <InitialSpeed> 0 </InitialSpeed>
+    <InitialAngle> 0 </InitialAngle>
+    <InitialCurrentA> 0 </InitialCurrentA>
+    <InitialCurrentB> 0 </InitialCurrentB>
+  </Model>
+
+</Models>

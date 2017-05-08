@@ -218,6 +218,7 @@
     <Content Include="ac6_example_dll.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Data\MotorLibrary.xml" />
     <Content Include="Content\About.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />
@@ -357,7 +358,10 @@
     <Content Include="Views\Simulation\MotorSelection.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <ProjectReference Include="..\MotorLibrary.Helper\MotorLibrary.Helper.csproj">
+      <Project>{b9d68cff-7658-41b0-bec0-f963796c59c5}</Project>
+      <Name>MotorLibrary.Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
