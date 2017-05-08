@@ -239,6 +239,7 @@
     <Content Include="Content\img\Work.JPG" />
     <Content Include="Content\simulation.css" />
     <Content Include="Content\style.css" />
+    <Content Include="DLL_AC6.dll" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

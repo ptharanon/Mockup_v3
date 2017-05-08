@@ -39,7 +39,7 @@
 <div class="form-group custom">
     <p id="filename" class="navbar-text navbar-text-custom">Upload</p>
     @*<input id="upload" type="file" style="display:none" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="openFile(event)" />*@
-    <input type="file" name="file" id="upload" style="display:none" onchange="openFile(event)" />
+    <input type="file" name="file" id="upload" style="display:none" accept=".csv" onchange="openFile(event)" />
     <input type="submit" id="submit" style="display:none" />
     <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
         <li><a onclick="clickUpload(event)" class="glyphicon glyphicon-upload"></a></li>
