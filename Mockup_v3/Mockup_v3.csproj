@@ -218,7 +218,9 @@
     <Content Include="ac6_example_dll.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\MotorLibrary.xml" />
+    <Content Include="App_Data\MotorLibrary.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\About.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />

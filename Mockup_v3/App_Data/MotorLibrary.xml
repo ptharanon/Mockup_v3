@@ -17,12 +17,12 @@
 
   <Model>
     <ModelName> MA80-2430-A </ModelName>
-    <Resistance> 0.2 </Resistance>
-    <D_Axis_Inductance> 8.5e-3 </D_Axis_Inductance>
-    <Q_Axis_Inductance> 8.5e-3 </Q_Axis_Inductance>
-    <FluxConstant> 0.175 </FluxConstant>
-    <Inertia> 0.089 </Inertia>
-    <Friction> 0.005 </Friction>
+    <Resistance> 0.4 </Resistance>
+    <D_Axis_Inductance> 9e-3 </D_Axis_Inductance>
+    <Q_Axis_Inductance> 9e-3 </Q_Axis_Inductance>
+    <FluxConstant> 0.25 </FluxConstant>
+    <Inertia> 0.1 </Inertia>
+    <Friction> 0.05 </Friction>
     <PolePair> 4 </PolePair>
     <InitialSpeed> 0 </InitialSpeed>
     <InitialAngle> 0 </InitialAngle>
@@ -32,12 +32,12 @@
 
   <Model>
     <ModelName> MA130-4830-A </ModelName>
-    <Resistance> 0.2 </Resistance>
-    <D_Axis_Inductance> 8.5e-3 </D_Axis_Inductance>
-    <Q_Axis_Inductance> 8.5e-3 </Q_Axis_Inductance>
-    <FluxConstant> 0.175 </FluxConstant>
-    <Inertia> 0.089 </Inertia>
-    <Friction> 0.005 </Friction>
+    <Resistance> 0.6 </Resistance>
+    <D_Axis_Inductance> 5e-3 </D_Axis_Inductance>
+    <Q_Axis_Inductance> 5e-3 </Q_Axis_Inductance>
+    <FluxConstant> 0.5 </FluxConstant>
+    <Inertia> 0.95 </Inertia>
+    <Friction> 0.1 </Friction>
     <PolePair> 4 </PolePair>
     <InitialSpeed> 0 </InitialSpeed>
     <InitialAngle> 0 </InitialAngle>

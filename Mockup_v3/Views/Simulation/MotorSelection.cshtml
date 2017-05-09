@@ -5,6 +5,7 @@
             <div class="navbar-brand" style="padding:15px; height:50px">Motor Library</div>
         </div>
         <ul class="nav navbar-nav" style="background-color:rgba(255,255,255,0)">
+
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Motor<span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -18,12 +19,12 @@
                     }
 
                     <!--
-        <li><a>Motor 1</a></li>
-        <li><a>Motor 2</a></li>
-        <li><a>Motor 3</a></li>
-        <li><a>Motor 4</a></li>
-        <li><a>Motor 5</a></li>
-        -->
+                <li><a>Motor 1</a></li>
+                <li><a>Motor 2</a></li>
+                <li><a>Motor 3</a></li>
+                <li><a>Motor 4</a></li>
+                <li><a>Motor 5</a></li>
+                -->
                 </ul>
             </li>
         </ul>
@@ -32,21 +33,22 @@
         </ul>
     </div>
     <div class="panel-body collapse" id="motorsettings" style="padding:0px 10px 10px 10px">
+        
         <div class="motorLibrary">
             <div class="col-md-9" style="padding-left:0px">
                 <fieldset class="motorParams" style="padding-bottom:10px">
                     <legend>Equivalent circuit parameters</legend>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Resistance (ohm)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Resistance" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">D-axis inductance (H)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="D-axis inductance" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Q-axis inductance (H)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Q-axis inductance" type="number" readonly/>
                     </div>
                 </fieldset>
             </div>
@@ -54,7 +56,7 @@
                 <legend>Flux constant</legend>
                 <div class="motorParam">
                     <label class="label-custom">Specify</label>
-                    <input class="input-custom" type="number" />
+                    <input class="input-custom" id="Flux constant" type="number" readonly/>
                 </div>
             </fieldset>
             <div class="col-md-9" style="padding-left:0px">
@@ -62,30 +64,30 @@
                     <legend>Mechanical parameters</legend>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Inertia (kg*m^2)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Inertia" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Friction (N-m-s)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Friction" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Pole pairs (Motors)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Pole pairs" type="number" readonly/>
                     </div>
                 </fieldset>
                 <fieldset>
                     <legend>Initial values</legend>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Speed (rad/s)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Initial speed" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Angle (deg)</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" id="Initial angle" type="number" readonly/>
                     </div>
                     <div class="motorParam col-md-4">
                         <label class="label-custom">Kp</label>
-                        <input class="input-custom" type="number" />
+                        <input class="input-custom" type="number" readonly/>
                     </div>
                 </fieldset>
             </div>
@@ -93,13 +95,43 @@
                 <legend>Initial currents</legend>
                 <div class="motorParam col-md-12">
                     <label class="label-custom">Phase A (A)</label>
-                    <input class="input-custom" type="number" />
+                    <input class="input-custom" id="Initial current A" type="number" readonly/>
                 </div>
                 <div class="motorParam col-md-12">
                     <label class="label-custom">Phase B (A)</label>
-                    <input class="input-custom" type="number" />
+                    <input class="input-custom" id="Initial current B" type="number" readonly/>
                 </div>
             </fieldset>
         </div>
+        
     </div>
 </div>
+
+<script type="text/javascript">
+    $(".dropdown-menu li a").click(function () {
+        var model = @Html.Raw(Json.Encode(Model));
+        var targetString = $.trim($(this).text());
+        var selectedModel;
+
+        for(var i = 0; i < model.length; i++) {
+            var name = $.trim(model[i].ModelName);
+            if(targetString == name){
+                selectedModel = model[i];
+            }
+            //console.log(name);
+        }
+
+        document.getElementById("Resistance").value = selectedModel.Resistance;
+        document.getElementById("D-axis inductance").value = selectedModel.D_Axis_Inductance;
+        document.getElementById("Q-axis inductance").value = selectedModel.Q_Axis_Inductance;
+        document.getElementById("Flux constant").value = selectedModel.FluxConstant;
+        document.getElementById("Inertia").value = selectedModel.Inertia;
+        document.getElementById("Friction").value = selectedModel.Friction;
+        document.getElementById("Pole pairs").value = selectedModel.PolePair;
+        document.getElementById("Initial speed").value = selectedModel.InitialSpeed;
+        document.getElementById("Initial angle").value = selectedModel.InitialAngle;
+        document.getElementById("Initial current A").value = selectedModel.InitialCurrentA;
+        document.getElementById("Initial current B").value = selectedModel.InitialCurrentB;
+
+    });
+</script>
