@@ -99,7 +99,6 @@ namespace Mockup_v3.Controllers
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            int scale_factor = 100;
             if (plotname == "inputSpeed")
             {
                 full_signal = graphs.InputSpeedTrace;
@@ -124,7 +123,10 @@ namespace Mockup_v3.Controllers
             {
                 full_signal = graphs.OutputVoltageTrace;
             }
-            for (int i = 0; i < full_signal[0].Count; i++)
+            float full_size = full_signal[0].Count;
+            float MAX_SIZE = 30000;
+            int scale_factor = (int)(full_size / MAX_SIZE) + 1;
+            for (int i = 0; i < full_size; i++)
             {
                 if (i % scale_factor == 0)
                 {

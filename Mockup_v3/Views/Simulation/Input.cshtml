@@ -53,7 +53,9 @@
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.custom').show();
+            $(this).parents(".panel-heading").find('#filename')[0].textContent = "Upload";
         }
+
         updatePlotData($(this).text(), $(this).parents(".panel")[0].id);
     });
 

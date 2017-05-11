@@ -9,12 +9,7 @@ namespace Mockup_v3
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                         //"~/Scripts/jquery-{version}.js"));
-                         "~/Scripts/jqPlot/jquery.js",
-                         "~/Scripts/jqPlot/jquery.jqplot.js",
-                         "~/Scripts/jqPlot/plugins/jqplot.cursor.js",
-                         "~/Scripts/jqPlot/plugins/jqplot.canvasTextRenderer.js",
-                         "~/Scripts/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.js"));
+                         "~/Scripts/jquery.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -42,8 +37,7 @@ namespace Mockup_v3
                       "~/Content/About.css",
                       "~/Content/animate.css",
                       "~/Content/style.css",
-                      "~/Content/simulation.css",
-                      "~/Scripts/jqPlot/jquery.jqplot.css"));
+                      "~/Content/simulation.css"));
 
             bundles.Add(new StyleBundle("~/Content/Color").Include(
                 "~/Content/default.css"));

@@ -1,58 +1,13 @@
-﻿<h2 style="text-align:center">Output</h2><br />
-
-<!-- Stator current -->
-<div class="panel panel-default">
+﻿<div id=@ViewBag.id class="panel panel-default">
     <div class="panel-heading nav navbar-default" style="padding:0px">
         <div class="navbar-header">
-            <text class="navbar-brand" style="padding:15px">Stator Current</text>
+            <text class="navbar-brand" style="padding:15px">@ViewBag.title</text>
         </div>
         <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
-            <li><a onClick="outputSCPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
+            <li><a onClick="" class="glyphicon glyphicon-download"></a></li>
         </ul>
     </div>
     <div class="panel-body">
-        <div id="outputSCGraph" style="height:300px"></div>
-    </div>
-</div>
-<!-- Torque -->
-<div class="panel panel-default">
-    <div class="panel-heading nav navbar-default" style="padding:0px">
-        <div class="navbar-header">
-            <text class="navbar-brand" style="padding:15px">Torque</text>
-        </div>
-        <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
-            <li><a onClick="outputTorquePlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
-        </ul>
-    </div>
-    <div class="panel-body">
-        <div id="outputTorqueGraph" style="height:300px"></div>
-    </div>
-</div>
-<!-- Speed -->
-<div class="panel panel-default">
-    <div class="panel-heading nav navbar-default" style="padding:0px">
-        <div class="navbar-header">
-            <text class="navbar-brand" style="padding:15px">Speed</text>
-        </div>
-        <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
-            <li><a onClick="outputSpeedPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
-        </ul>
-    </div>
-    <div class="panel-body">
-        <div id="outputSpeedGraph" style="height:300px"></div>
-    </div>
-</div>
-<!-- DC bus voltage -->
-<div class="panel panel-default">
-    <div class="panel-heading nav navbar-default" style="padding:0px">
-        <div class="navbar-header">
-            <text class="navbar-brand" style="padding:15px">DC Bus Voltage</text>
-        </div>
-        <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
-            <li><a onClick="outputDCVPlot.replot({ resetAxes: true })" class="glyphicon glyphicon-refresh"></a></li>
-        </ul>
-    </div>
-    <div class="panel-body">
-        <div id="outputDCVGraph" style="height:300px"></div>
+        <div id=@ViewBag.plotid style="height:300px"></div>
     </div>
 </div>

@@ -14,7 +14,7 @@
     <div id="inputForm" style="text-align:center">
         @Html.Partial("MotorSelection")
         @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } });
         <!-- Simulate button -->
         <div style="margin:20px">
             <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
@@ -24,7 +24,11 @@
 </div>
 <!-- Output -->
 <div class="outputs col-md-6" style="text-align:center">
-    @Html.Partial("Output")
+    <h2 style="text-align:center">Output</h2><br />
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Speed" }, { "id", "outputSpeed" }, { "plotid", "outputSpeedGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputDCVGraph" } });
     <!-- Export button -->
     <div style="margin:20px">
         <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
@@ -45,7 +49,7 @@
             t: 0,
             b: 40,
             l: 40,
-            r: 0
+            r: 10
         },
         hovermode: 'closest'
     };
@@ -75,6 +79,10 @@
                     drawPlot("outputSpeed");
                     drawPlot("outputVoltage");
                     document.getElementById('simulate-btn').textContent = "SIMULATE!";
+                },
+                error: function () {
+                    document.getElementById('simulate-btn').textContent = "SIMULATE!";
+                    alert('Error with simulation.');
                 }
             })
         });
