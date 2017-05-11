@@ -47,20 +47,18 @@
         margin: {
             autosize: true,
             t: 0,
-            b: 40,
-            l: 40,
+            b: 30,
+            l: 30,
             r: 10
         },
         hovermode: 'closest'
     };
-    Plotly.plot('refSpeedGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    Plotly.plot('loadTorqueGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    Plotly.plot('outputSCGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    Plotly.plot('outputTorqueGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    Plotly.plot('outputSpeedGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    Plotly.plot('outputDCVGraph', [{ x: [0], y: [0] }], layout, { showLink: false });
-    //var plotDiv = document.getElementById('refSpeedGraph');
-    //var plotData = plotDiv.data;
+    Plotly.plot('refSpeedGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('loadTorqueGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('outputSCGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('outputTorqueGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('outputSpeedGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('outputDCVGraph', [{ x: [], y: [] }], layout, { showLink: false });
 </script>
 
 <script>
