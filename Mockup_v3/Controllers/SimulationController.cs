@@ -35,7 +35,11 @@ namespace Mockup_v3.Controllers
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            if (type == "Step")
+            if (type == "Constant")
+            {
+                signal = graphs.GenerateConstant(param1, sample, endtime);
+            }
+            else if (type == "Step")
             {
                 signal = graphs.GenerateStep(param1, param2, param3, sample, endtime);
             }

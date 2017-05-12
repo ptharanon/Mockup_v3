@@ -13,13 +13,26 @@ namespace Mockup_v3.Models
         public List<List<double>> OutputTorqueTrace { get; set; }
         public List<List<double>> OutputSpeedTrace { get; set; }
         public List<List<double>> OutputVoltageTrace { get; set; }
-        
+
+        public List<List<double>> GenerateConstant(double value, double sample, double endtime)
+        {
+            List<List<double>> signal = new List<List<double>>();
+            signal.Add(new List<double>());
+            signal.Add(new List<double>());
+            for (int i = 0; i <= (endtime / sample) + 1; i++)
+            {
+                signal[0].Add(i * sample);
+                signal[1].Add(value);
+            }
+
+            return signal;
+        }
+
         public List<List<double>> GenerateStep(double steptime, double initial, double final, double sample, double endtime)
         {
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            int j = 0;
             for (int i = 0; i <= (endtime / sample) + 1 ; i++)
             {
                 if (i * sample < steptime)
@@ -32,7 +45,6 @@ namespace Mockup_v3.Models
                     signal[0].Add(i * sample);
                     signal[1].Add(final);
                 }
-                j++;
             }
 
             return signal;

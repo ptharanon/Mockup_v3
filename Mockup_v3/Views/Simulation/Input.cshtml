@@ -10,6 +10,7 @@
                     Select Waveform<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
+                    <li><a>Constant</a></li>
                     <li><a>Step</a></li>
                     <li><a>Ramp</a></li>
                     <li><a>Sinusoid</a></li>
@@ -30,25 +31,36 @@
     $(".dropdown-menu li a").click(function () {
         $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
         $(this).parents(".dropdown").find('.dropdown-toggle').val($(this).data('value'));
-        if ($(this).text() == "Sinusoid") {
+        if ($(this).text() == "Constant") {
+            $(this).parents(".panel-heading").find('.constant').show();
+            $(this).parents(".panel-heading").find('.step').hide();
+            $(this).parents(".panel-heading").find('.ramp').hide();
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.custom').hide();
+        }
+        else if ($(this).text() == "Step") {
+            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.step').show();
+            $(this).parents(".panel-heading").find('.ramp').hide();
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.custom').hide();
+        }
+        else if ($(this).text() == "Ramp") {
+            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.step').hide();
+            $(this).parents(".panel-heading").find('.ramp').show();
+            $(this).parents(".panel-heading").find('.sine').hide();
+            $(this).parents(".panel-heading").find('.custom').hide();
+        }
+        else if ($(this).text() == "Sinusoid") {
+            $(this).parents(".panel-heading").find('.constant').hide();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.sine').show();
             $(this).parents(".panel-heading").find('.custom').hide();
         }
-        else if ($(this).text() == "Step") {
-            $(this).parents(".panel-heading").find('.sine').hide();
-            $(this).parents(".panel-heading").find('.ramp').hide();
-            $(this).parents(".panel-heading").find('.step').show();
-            $(this).parents(".panel-heading").find('.custom').hide();
-        }
-        else if ($(this).text() == "Ramp") {
-            $(this).parents(".panel-heading").find('.step').hide();
-            $(this).parents(".panel-heading").find('.sine').hide();
-            $(this).parents(".panel-heading").find('.ramp').show();
-            $(this).parents(".panel-heading").find('.custom').hide();
-        }
         else if ($(this).text() == "Custom") {
+            $(this).parents(".panel-heading").find('.constant').hide();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
@@ -64,20 +76,26 @@
     });
 
     function updatePlotData(plotType, plotName) {
-        if (plotType == "Step") {
+        if (plotType == "Constant") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = 0;
+            var param3 = 0;
+            var param4 = 0;
+        } else if (plotType == "Step") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
             var param1 = parseFloat(inputFields.children[1].value);
             var param2 = parseFloat(inputFields.children[3].value);
             var param3 = parseFloat(inputFields.children[5].value);
             var param4 = 0;
         } else if (plotType == "Ramp") {
-            var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[3];
             var param1 = parseFloat(inputFields.children[1].value);
             var param2 = parseFloat(inputFields.children[3].value);
             var param3 = parseFloat(inputFields.children[5].value);
             var param4 = 0;
         } else if (plotType == "Sinusoid") {
-            var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
             var param1 = parseFloat(inputFields.children[1].value);
             var param2 = parseFloat(inputFields.children[3].value);
             var param3 = parseFloat(inputFields.children[5].value);

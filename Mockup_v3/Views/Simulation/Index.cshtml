@@ -25,9 +25,9 @@
 <!-- Output -->
 <div class="outputs col-md-6" style="text-align:center">
     <h2 style="text-align:center">Output</h2><br />
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } });
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } });
     @Html.Partial("Output", new ViewDataDictionary { { "title", "Speed" }, { "id", "outputSpeed" }, { "plotid", "outputSpeedGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } });
     @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputDCVGraph" } });
     <!-- Export button -->
     <div style="margin:20px">
