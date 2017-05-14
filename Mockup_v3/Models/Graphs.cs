@@ -11,7 +11,9 @@ namespace Mockup_v3.Models
         public List<List<double>> InputTorqueTrace { get; set; }
         public List<List<double>> OutputCurrentTrace { get; set; }
         public List<List<double>> OutputTorqueTrace { get; set; }
+        public List<List<double>> OutputRefTorqueTrace { get; set; }
         public List<List<double>> OutputSpeedTrace { get; set; }
+        public List<List<double>> OutputRefSpeedTrace { get; set; }
         public List<List<double>> OutputVoltageTrace { get; set; }
 
         public List<List<double>> GenerateConstant(double value, double sample, double endtime)

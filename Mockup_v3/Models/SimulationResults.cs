@@ -60,9 +60,15 @@ namespace Mockup_v3.Models
             List<List<double>> motor_Speed = new List<List<double>>();
             motor_Speed.Add(new List<double>());
             motor_Speed.Add(new List<double>());
+            List<List<double>> ref_Speed = new List<List<double>>();
+            ref_Speed.Add(new List<double>());
+            ref_Speed.Add(new List<double>());
             List<List<double>> motor_Torque = new List<List<double>>();
             motor_Torque.Add(new List<double>());
             motor_Torque.Add(new List<double>());
+            List<List<double>> ref_Torque = new List<List<double>>();
+            ref_Torque.Add(new List<double>());
+            ref_Torque.Add(new List<double>());
             List<List<double>> DCBus_Voltage = new List<List<double>>();
             DCBus_Voltage.Add(new List<double>());
             DCBus_Voltage.Add(new List<double>());
@@ -84,7 +90,9 @@ namespace Mockup_v3.Models
 
                     int index_statorCurrent = i;
                     int index_motorSpeed = i + 1 * total_size;
+                    int index_refSpeed = i + 2 * total_size;
                     int index_motorTorque = i + 3 * total_size;
+                    int index_refTorque = i + 4 * total_size;
                     int index_DCBusVoltage = i + 5 * total_size;
 
 
@@ -94,8 +102,12 @@ namespace Mockup_v3.Models
                     stator_Current[1].Add(results[index_statorCurrent]);
                     motor_Speed[0].Add(scaledTime[i]);
                     motor_Speed[1].Add(results[index_motorSpeed]);
+                    ref_Speed[0].Add(scaledTime[i]);
+                    ref_Speed[1].Add(results[index_refSpeed]);
                     motor_Torque[0].Add(scaledTime[i]);
                     motor_Torque[1].Add(results[index_motorTorque]);
+                    ref_Torque[0].Add(scaledTime[i]);
+                    ref_Torque[1].Add(results[index_refTorque]);
                     DCBus_Voltage[0].Add(scaledTime[i]);
                     DCBus_Voltage[1].Add(results[index_DCBusVoltage]);
 
@@ -121,7 +133,9 @@ namespace Mockup_v3.Models
 
             setOfOutputs.Add(stator_Current);
             setOfOutputs.Add(motor_Speed);
+            setOfOutputs.Add(ref_Speed);
             setOfOutputs.Add(motor_Torque);
+            setOfOutputs.Add(ref_Torque);
             setOfOutputs.Add(DCBus_Voltage);
 
             return setOfOutputs;

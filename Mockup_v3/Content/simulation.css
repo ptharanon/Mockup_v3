@@ -27,6 +27,12 @@ li {
     height: 50px;
 }
 
+.const {
+    display: none;
+    margin: 0px;
+    height: 50px;
+}
+
 .hidden{
     display: none;
 }

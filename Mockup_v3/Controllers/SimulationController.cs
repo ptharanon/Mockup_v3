@@ -100,9 +100,13 @@ namespace Mockup_v3.Controllers
         public ActionResult GetPlotData(String plotname)
         {
             List<List<double>> full_signal = new List<List<double>>();
+            List<List<double>> full_refsignal = new List<List<double>>();
             List<List<double>> signal = new List<List<double>>();
+            List<List<double>> refsignal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
+            refsignal.Add(new List<double>());
+            refsignal.Add(new List<double>());
             if (plotname == "inputSpeed")
             {
                 full_signal = graphs.InputSpeedTrace;
@@ -118,10 +122,12 @@ namespace Mockup_v3.Controllers
             else if (plotname == "outputTorque")
             {
                 full_signal = graphs.OutputTorqueTrace;
+                full_refsignal = graphs.OutputRefTorqueTrace;
             }
             else if (plotname == "outputSpeed")
             {
                 full_signal = graphs.OutputSpeedTrace;
+                full_refsignal = graphs.OutputRefSpeedTrace;
             }
             else if (plotname == "outputVoltage")
             {
@@ -136,9 +142,14 @@ namespace Mockup_v3.Controllers
                 {
                     signal[0].Add(full_signal[0][i]);
                     signal[1].Add(full_signal[1][i]);
+                    if (full_refsignal.Count > 0)
+                    {
+                        refsignal[0].Add(full_refsignal[0][i]);
+                        refsignal[1].Add(full_refsignal[1][i]);
+                    }
                 }
             }
-            return Json(new { signal = signal }, JsonRequestBehavior.AllowGet);
+            return Json(new { signal = signal, refsignal = refsignal }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -148,8 +159,10 @@ namespace Mockup_v3.Controllers
             List<List<List<double>>> output = results.startSimulation(graphs.InputSpeedTrace, graphs.InputTorqueTrace, graphs.InputTorqueTrace[0].Count);
             graphs.OutputCurrentTrace = output[0];
             graphs.OutputSpeedTrace = output[1];
-            graphs.OutputTorqueTrace = output[2];
-            graphs.OutputVoltageTrace = output[3];
+            graphs.OutputRefSpeedTrace = output[2];
+            graphs.OutputTorqueTrace = output[3];
+            graphs.OutputRefTorqueTrace = output[4];
+            graphs.OutputVoltageTrace = output[5];
 
             return Json(new { done = true }, JsonRequestBehavior.AllowGet);
         }

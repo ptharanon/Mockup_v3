@@ -32,35 +32,35 @@
         $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
         $(this).parents(".dropdown").find('.dropdown-toggle').val($(this).data('value'));
         if ($(this).text() == "Constant") {
-            $(this).parents(".panel-heading").find('.constant').show();
+            $(this).parents(".panel-heading").find('.const').show();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Step") {
-            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.const').hide();
             $(this).parents(".panel-heading").find('.step').show();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Ramp") {
-            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.const').hide();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.ramp').show();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Sinusoid") {
-            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.const').hide();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
             $(this).parents(".panel-heading").find('.sine').show();
             $(this).parents(".panel-heading").find('.custom').hide();
         }
         else if ($(this).text() == "Custom") {
-            $(this).parents(".panel-heading").find('.constant').hide();
+            $(this).parents(".panel-heading").find('.const').hide();
             $(this).parents(".panel-heading").find('.step').hide();
             $(this).parents(".panel-heading").find('.sine').hide();
             $(this).parents(".panel-heading").find('.ramp').hide();
