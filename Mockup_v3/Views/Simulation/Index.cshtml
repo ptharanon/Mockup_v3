@@ -13,8 +13,8 @@
     <h2 style="text-align:center">Input</h2><br />
     <div id="inputForm" style="text-align:center">
         @Html.Partial("MotorSelection")
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } });
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } });
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } })
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
         <!-- Simulate button -->
         <div style="margin:20px">
             <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
@@ -25,10 +25,10 @@
 <!-- Output -->
 <div class="outputs col-md-6" style="text-align:center">
     <h2 style="text-align:center">Output</h2><br />
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Speed" }, { "id", "outputSpeed" }, { "plotid", "outputSpeedGraph" } });
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } });
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } });
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputDCVGraph" } });
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Speed" }, { "id", "outputSpeed" }, { "plotid", "outputSpeedGraph" } })
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } })
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } })
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputDCVGraph" } })
     <!-- Export button -->
     <div style="margin:20px">
         <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
@@ -136,4 +136,182 @@
         Plotly.Plots.resize(outputSpeedGraph);
         Plotly.Plots.resize(outputDCVGraph);
     });
+</script>
+
+<script type="text/javascript">
+    $(".dropdown-menu li a").click(function () {
+        $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
+        $(this).parents(".dropdown").find('.dropdown-toggle').val($(this).data('value'));
+        if ($(this).text() == "Constant") {
+            $(this).parents(".panel").find('.const').show();
+            $(this).parents(".panel").find('.step').hide();
+            $(this).parents(".panel").find('.ramp').hide();
+            $(this).parents(".panel").find('.sine').hide();
+            $(this).parents(".panel").find('.custom').hide();
+        }
+        else if ($(this).text() == "Step") {
+            $(this).parents(".panel").find('.const').hide();
+            $(this).parents(".panel").find('.step').show();
+            $(this).parents(".panel").find('.ramp').hide();
+            $(this).parents(".panel").find('.sine').hide();
+            $(this).parents(".panel").find('.custom').hide();
+        }
+        else if ($(this).text() == "Ramp") {
+            $(this).parents(".panel").find('.const').hide();
+            $(this).parents(".panel").find('.step').hide();
+            $(this).parents(".panel").find('.ramp').show();
+            $(this).parents(".panel").find('.sine').hide();
+            $(this).parents(".panel").find('.custom').hide();
+        }
+        else if ($(this).text() == "Sinusoid") {
+            $(this).parents(".panel").find('.const').hide();
+            $(this).parents(".panel").find('.step').hide();
+            $(this).parents(".panel").find('.ramp').hide();
+            $(this).parents(".panel").find('.sine').show();
+            $(this).parents(".panel").find('.custom').hide();
+        }
+        else if ($(this).text() == "Custom") {
+            $(this).parents(".panel").find('.const').hide();
+            $(this).parents(".panel").find('.step').hide();
+            $(this).parents(".panel").find('.sine').hide();
+            $(this).parents(".panel").find('.ramp').hide();
+            $(this).parents(".panel").find('.custom').show();
+            $(this).parents(".panel").find('#filename')[0].textContent = "Upload";
+        }
+
+        updatePlotData($(this).text(), $(this).parents(".panel")[0].id);
+    });
+
+    $(".inputField").change(function (event) {
+        updatePlotData($(this).parents(".panel").find(".dropdown-toggle")[0].text, $(this).parents(".panel")[0].id);
+    });
+
+    $("#endtime").change(function (event) {
+        updatePlotData(document.getElementById("inputSpeed").children[0].children[1].children[0].children[0].text, "inputSpeed");
+        updatePlotData(document.getElementById("inputTorque").children[0].children[1].children[0].children[0].text, "inputTorque");
+    });
+
+    function updatePlotData(plotType, plotName) {
+        var endtime = document.getElementById('endtime').value;
+        if (plotType == "Constant") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = 0;
+            var param3 = 0;
+            var param4 = 0;
+        } else if (plotType == "Step") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[1];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = 0;
+        } else if (plotType == "Sinusoid") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[2];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = parseFloat(inputFields.children[7].value);
+        } else if (plotType == "Ramp") {
+            var inputFields = document.getElementById(plotName).children[0].children[2].children[3];
+            var param1 = parseFloat(inputFields.children[1].value);
+            var param2 = parseFloat(inputFields.children[3].value);
+            var param3 = parseFloat(inputFields.children[5].value);
+            var param4 = 0;
+        }
+        if (plotType != "Custom") {
+            $.ajax({
+                url: '@Url.Action("UpdateGraph", "Simulation")',
+                data: {
+                    plot: plotName,
+                    type: plotType,
+                    param1: param1,
+                    param2: param2,
+                    param3: param3,
+                    param4: param4,
+                    endtime: endtime
+                },
+                type: "post",
+                dataType: 'json',
+                success: function (response) {
+                    drawPlot(plotName);
+                }
+            })
+        }
+    };
+</script>
+
+<script>
+    function UploadFile(file, plotName)
+    {
+        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Loading...";
+        var data = new FormData();
+        data.append("file", file);
+        data.append("plotname", plotName);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '@Url.Action("Upload", "Simulation")', true);
+        xhr.addEventListener("load", function (event) { UploadComplete(event, plotName, file.name); }, false);
+        xhr.addEventListener("error", function (event) { UploadFailed(event); }, false);
+        xhr.send(data);
+    }
+
+    function UploadComplete(event, plotName, fileName) {
+        if (event.target.status == 200) {
+            drawPlot(plotName);
+            $(document.getElementById(plotName)).find('#filename')[0].textContent = fileName;
+        }
+        else {
+            $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
+            alert("Error Uploading File");
+        }
+    }
+
+    function UploadFailed(event) {
+        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
+        alert("There was an error attempting to upload the file.");
+    }
+</script>
+
+<script>
+    function clickUpload(event) {
+        $(event.path[3].children.upload).trigger('click');
+    };
+
+    var openFile = function (event) {
+        event.preventDefault();
+        if (event.path[0].files.length > 0) {
+            var f = event.path[0].files[0];
+            UploadFile(f, event.path[5].id);
+        }
+        //var f = event.path[0].files[0];
+        //var reader = new FileReader();
+        //var name = f.name;
+        //var plotData = [];
+        //reader.onload = function (e) {
+        //    var data = e.target.result;
+        //    var workbook = XLSX.read(data, { type: 'binary' });
+        //    var i = 2;
+        //    var cellA = "A" + i;
+        //    var cellB = "B" + i;
+        //    var Sheet = workbook.Sheets[workbook.SheetNames[0]];
+        //    while (Sheet[cellA] !== undefined && Sheet[cellB] !== undefined) {
+        //        plotData[i - 2] = [Sheet[cellA].v, Sheet[cellB].v];
+        //        i++;
+        //        var cellA = "A" + i;
+        //        var cellB = "B" + i;
+        //    }
+        //};
+        //reader.readAsBinaryString(f);
+        //
+        //reader.onloadend = function (e) {
+        //    var id = event.path[4].id;
+        //    if (id == "inputSpeed") {
+        //        refSpeedPlot.series[0].data = plotData;
+        //        refSpeedPlot.replot({ resetAxes: true });
+        //    }
+        //    if (id == "inputTorque") {
+        //        loadTorquePlot.series[0].data = plotData;
+        //        loadTorquePlot.replot({ resetAxes: true });
+        //    }
+        //}
+    };
 </script>

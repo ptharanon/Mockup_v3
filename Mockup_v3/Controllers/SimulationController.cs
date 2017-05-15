@@ -28,10 +28,9 @@ namespace Mockup_v3.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4)
+        public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4, double endtime)
         {
             double sample = 2 * Math.Pow(10, -5);
-            double endtime = 2;
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());

@@ -1,0 +1,53 @@
+﻿<div class="form-group const" style="text-align:right">
+    <p class="navbar-text navbar-text-custom">Value</p>
+    <input type="text" class="form-control inputField" value="1">
+</div>
+
+<div class="form-group step" style="text-align:right">
+    <p class="navbar-text navbar-text-custom">Step time</p>
+    <input type="text" class="form-control inputField" value="1">
+
+    <p class="navbar-text navbar-text-custom">Initial value</p>
+    <input type="text" class="form-control inputField" value="0">
+
+    <p class="navbar-text navbar-text-custom">Final value</p>
+    <input type="text" class="form-control inputField" value="1">
+</div>
+
+<div class="form-group sine">
+    <p class="navbar-text navbar-text-custom">Amplitude</p>
+    <input type="text" class="form-control inputField" value="1">
+
+    <p class="navbar-text navbar-text-custom">Bias</p>
+    <input type="text" class="form-control inputField" value="0">
+
+    <p class="navbar-text navbar-text-custom">Frequency</p>
+    <input type="text" class="form-control inputField" value="1">
+
+    <p class="navbar-text navbar-text-custom">Phase</p>
+    <input type="text" class="form-control inputField" value="0">
+</div>
+
+<div class="form-group ramp">
+    <p class="navbar-text navbar-text-custom">Slope</p>
+    <input type="text" class="form-control inputField" value="1">
+
+    <p class="navbar-text navbar-text-custom">Start time</p>
+    <input type="text" class="form-control inputField" value="1">
+
+    <p class="navbar-text navbar-text-custom">Initial value</p>
+    <input type="text" class="form-control inputField" value="0">
+</div>
+
+@using (Html.BeginForm("Upload", "Simulation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div class="form-group custom">
+    <p id="filename" class="navbar-text navbar-text-custom">Upload</p>
+    @*<input id="upload" type="file" style="display:none" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="openFile(event)" />*@
+    <input type="file" name="file" id="upload" style="display:none" accept=".csv" onchange="openFile(event)" />
+    <input type="submit" id="submit" style="display:none" />
+    <ul class="nav navbar-nav" style="float:right; background-color:rgba(255,255,255,0)">
+        <li><a style="color:#777; position:initial" onclick="clickUpload(event)" class="glyphicon glyphicon-upload"></a></li>
+    </ul>
+</div>
+}
