@@ -30,7 +30,7 @@ namespace Mockup_v3.Controllers
         [HttpPost]
         public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4, double endtime)
         {
-            double sample = 2 * Math.Pow(10, -5);
+            double sample = 1 * Math.Pow(10, -4);
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
@@ -155,7 +155,7 @@ namespace Mockup_v3.Controllers
         public ActionResult Simulate(String motor)
         {
             SimulationResults results = new SimulationResults();
-            List<List<List<double>>> output = results.startSimulation(graphs.InputSpeedTrace, graphs.InputTorqueTrace, graphs.InputTorqueTrace[0].Count);
+            List<List<List<double>>> output = results.startSimulation(motor, graphs.InputSpeedTrace, graphs.InputTorqueTrace, graphs.InputTorqueTrace[0].Count);
             graphs.OutputCurrentTrace = output[0];
             graphs.OutputSpeedTrace = output[1];
             graphs.OutputRefSpeedTrace = output[2];

@@ -67,9 +67,10 @@
         $('#simulate-btn').click(function (e) {
             e.preventDefault();
             document.getElementById('simulate-btn').textContent = "Loading...";
+            var motor = document.getElementById('motor-name').text;
             $.ajax({
                 url: '@Url.Action("Simulate", "Simulation")',
-                data: { motor: "Motor 1" },
+                data: { motor: motor },
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
@@ -92,11 +93,13 @@
     });
 
     function drawPlot(plotName) {
+        var endtime = 2;
         $.ajax({
             url: '@Url.Action("GetPlotData", "Simulation")',
             data: { plotname: plotName },
             type: "get",
             success: function (response) {
+                endtime = response.signal[0][response.signal[0].length-1];
                 if (plotName == "inputSpeed") {
                     Plotly.deleteTraces(refSpeedGraph, 0);
                     Plotly.addTraces(refSpeedGraph, { x: response.signal[0], y: response.signal[1] });
@@ -124,6 +127,7 @@
                 }
             }
         })
+        return endtime;
     }
 </script>
 
@@ -235,7 +239,7 @@
                 success: function (response) {
                     drawPlot(plotName);
                 }
-            })
+            });
         }
     };
 </script>
@@ -256,7 +260,8 @@
 
     function UploadComplete(event, plotName, fileName) {
         if (event.target.status == 200) {
-            drawPlot(plotName);
+            var endtime = drawPlot(plotName);
+            document.getElementById('endtime').value = endtime;
             $(document.getElementById(plotName)).find('#filename')[0].textContent = fileName;
         }
         else {

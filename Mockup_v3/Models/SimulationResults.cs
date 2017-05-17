@@ -13,11 +13,19 @@ namespace Mockup_v3.Models
     public class SimulationResults
     {
         //Import compiled DLL of the AC6_example model
-        [DllImport(@"DLL_AC6", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
-
+        [DllImport(@"Model1", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
         //Definition for the entry point function (return type pointer - platform specific)
-        public static extern IntPtr runSimulation(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
+        public static extern IntPtr RunModel1(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
 
+        //Import compiled DLL of the AC6_example model
+        [DllImport(@"Model2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
+        //Definition for the entry point function (return type pointer - platform specific)
+        public static extern IntPtr RunModel2(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
+
+        //Import compiled DLL of the AC6_example model
+        [DllImport(@"Model3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "runSimulation")]
+        //Definition for the entry point function (return type pointer - platform specific)
+        public static extern IntPtr RunModel3(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
 
         //Function to process input data into input arrays
         public void processData(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
@@ -28,7 +36,7 @@ namespace Mockup_v3.Models
          *  Inputs: 2D double array of speed and torque, data size
          *  Outputs: One big list contains 4 different outputs (each output is represented by a list of 2D array)
          */ 
-        public List<List<List<double>>> startSimulation(List<List<double>> speedCoordinates, List<List<double>> torqueCoordinates, int size)
+        public List<List<List<double>>> startSimulation(string motor, List<List<double>> speedCoordinates, List<List<double>> torqueCoordinates, int size)
         {
             // Convert array of points to vectors.
             double[] speedInput = new double[size];
@@ -44,7 +52,7 @@ namespace Mockup_v3.Models
             double simulationTime = timeVector[size - 1] - timeVector[0];
             //int size = Math.Min((int)(4000 * simulationTime), 10000);
             double sampleTime = timeVector[1] - timeVector[0];
-            double MODEL_SAMPLING = 2E-06;
+            double MODEL_SAMPLING = 1E-04;
 
             int total_size = (size - 1) * (int) (sampleTime / MODEL_SAMPLING);
             int scale = total_size / size;
@@ -75,7 +83,19 @@ namespace Mockup_v3.Models
 
             try
             {
-                IntPtr pointer = runSimulation(timeVector, speedInput, torqueInput, size);
+                IntPtr pointer;
+                if (motor.Contains("MA60-0630-A"))
+                {
+                    pointer = RunModel1(timeVector, speedInput, torqueInput, size);
+                }
+                else if (motor.Contains("MA80-2430-A"))
+                {
+                    pointer = RunModel2(timeVector, speedInput, torqueInput, size);
+                }
+                else
+                {
+                    pointer = RunModel3(timeVector, speedInput, torqueInput, size);
+                }
                 Marshal.Copy(pointer, results, 0, total_size * 6);
                 Marshal.FreeCoTaskMem(pointer);
 
