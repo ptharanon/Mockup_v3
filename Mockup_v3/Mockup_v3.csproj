@@ -280,6 +280,7 @@
     <Content Include="Scripts\plotly.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\simulation.js" />
     <Content Include="Scripts\wow.min.js" />
     <Content Include="Scripts\xlsx.core.min.js" />
     <Content Include="Scripts\_references.js" />

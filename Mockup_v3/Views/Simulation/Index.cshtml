@@ -13,8 +13,8 @@
     <h2 style="text-align:center">Input</h2><br />
     <div id="inputForm" style="text-align:center">
         @Html.Partial("MotorSelection")
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } })
-        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "inputSpeedGraph" } })
+        @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "inputTorqueGraph" } })
         @Html.Partial("SignalSettings")
         <!-- Simulate button -->
         <div style="margin:20px">
@@ -28,102 +28,95 @@
     <h2 style="text-align:center">Output</h2><br />
     @Html.Partial("Output", new ViewDataDictionary { { "title", "Speed" }, { "id", "outputSpeed" }, { "plotid", "outputSpeedGraph" } })
     @Html.Partial("Output", new ViewDataDictionary { { "title", "Torque" }, { "id", "outputTorque" }, { "plotid", "outputTorqueGraph" } })
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputSCGraph" } })
-    @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputDCVGraph" } })
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "Stator Current" }, { "id", "outputCurrent" }, { "plotid", "outputCurrentGraph" } })
+    @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputVoltageGraph" } })
     <!-- Export button -->
     <div style="margin:20px">
         <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
     </div>
 </div>
 
+<script src="~/Scripts/simulation.js"></script>
+
 <script>
-    var layout1 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('refSpeedGraph', [{ x: [], y: [] }], layout1, { showLink: false });
-    var layout2 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('loadTorqueGraph', [{ x: [], y: [] }], layout2, { showLink: false });
-    var layout3 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('outputSCGraph', [{ x: [], y: [] }], layout3, { showLink: false });
-    var layout4 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('outputTorqueGraph', [{ x: [], y: [] }], layout4, { showLink: false });
-    var layout5 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('outputSpeedGraph', [{ x: [], y: [] }], layout5, { showLink: false });
-    var layout6 = {
-        xaxis: { title: 'Time', showticklabels: true },
-        yaxis: { showticklabels: true },
-        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
-        hovermode: 'closest',
-        showlegend: false
-    };
-    Plotly.plot('outputDCVGraph', [{ x: [], y: [] }], layout6, { showLink: false });
+    // Pass file to controller.
+    function UploadFile(file, plotName) {
+
+        // Give feedback while loading.
+        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Loading...";
+
+        // Use an XMLHttpRequest to pass the file to the controller.
+        var data = new FormData();
+        data.append("file", file);
+        data.append("plotname", plotName);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '@Url.Action("Upload", "Simulation")', true);
+        // Add listeners.
+        xhr.addEventListener("load",
+            // Success function.
+            function (event) {
+                if (event.target.status == 200) {
+                    drawPlot(plotName);
+                    $(document.getElementById(plotName)).find('#filename')[0].textContent = file.name;
+                }
+                else {
+                    $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
+                    alert("An error occurred when uploading or processing file.");
+                }
+            }, false
+        );
+        xhr.addEventListener("error",
+            // Error function.
+            function (event) {
+                $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
+                alert("There was an error attempting to upload the file.");
+            }, false
+        );
+        
+        // Send the file.
+        xhr.send(data);
+    }
 </script>
 
 <script>
-    $(document).ready(function () {
-        $('#simulate-btn').click(function (e) {
-            e.preventDefault();
-            document.getElementById('simulate-btn').textContent = "Loading...";
-            var motor = document.getElementById('motor-name').text;
-            $.ajax({
-                url: '@Url.Action("Simulate", "Simulation")',
-                data: { motor: motor },
-                type: "post",
-                dataType: 'json',
-                success: function (response) {
-                    if (response.zoh == true) {
-                        alert('NOTE: Zero order hold used to match longer input.');
-                    }
-                    if (response.sm == false) {
-                        alert('Error: Sample times don\'t match');
-                    } else {
-                        drawPlot("outputCurrent");
-                        drawPlot("outputTorque");
-                        drawPlot("outputSpeed");
-                        drawPlot("outputVoltage");
-                    }
-                    document.getElementById('simulate-btn').textContent = "SIMULATE!";
-                },
-                error: function () {
-                    document.getElementById('simulate-btn').textContent = "SIMULATE!";
-                    alert('Error with simulation.');
-                }
-            })
-        });
-    });
-
-    $('#exportcsv-btn').click(function (e) {
+    // Call Simulate inside the SimulationController.
+    $('#simulate-btn').click(function (e) {
         e.preventDefault();
+
+        // Give feedback.
+        document.getElementById('simulate-btn').textContent = "Loading...";
+
+        // We only need to send motor name, as the plot data is in the model, in higher resolution than the graphs.
+        var motor = document.getElementById('motor-name').text;
+        $.ajax({
+            url: '@Url.Action("Simulate", "Simulation")',
+            data: { motor: motor },
+            type: "post",
+            dataType: 'json',
+            success: function (response) {
+                // If ZOH was used.
+                if (response.zoh == true) {
+                    alert('Note: Zero order hold used to match longer input.');
+                }
+                // If sample times didn't match.
+                if (response.sm == false) {
+                    alert('Error: Sample times don\'t match');
+                } else {
+                    drawPlot("outputCurrent");
+                    drawPlot("outputTorque");
+                    drawPlot("outputSpeed");
+                    drawPlot("outputVoltage");
+                }
+                document.getElementById('simulate-btn').textContent = "SIMULATE!";
+            },
+            error: function () {
+                document.getElementById('simulate-btn').textContent = "SIMULATE!";
+                alert('An error occurred during simulation.');
+            }
+        })
     });
 
+    // Get the graph data from the model, and plot it.
     function drawPlot(plotName) {
         $.ajax({
             url: '@Url.Action("GetPlotData", "Simulation")',
@@ -131,120 +124,43 @@
             type: "get",
             success: function (response) {
                 if (plotName == "inputSpeed") {
-                    Plotly.deleteTraces(refSpeedGraph, 0);
-                    Plotly.addTraces(refSpeedGraph, { x: response.signal[0], y: response.signal[1], name: "Input Speed" });
-                } else if (plotName == "inputTorque") {
-                    Plotly.deleteTraces(loadTorqueGraph, 0);
-                    Plotly.addTraces(loadTorqueGraph, { x: response.signal[0], y: response.signal[1], name: "Load Torque" });
-                } else if (plotName == "outputCurrent") {
-                    Plotly.deleteTraces(outputSCGraph, 0);
-                    Plotly.addTraces(outputSCGraph, { x: response.signal[0], y: response.signal[1], name: "Output Current" });
-                } else if (plotName == "outputTorque") {
-                    while (outputTorqueGraph.data.length > 0) {
-                        Plotly.deleteTraces(outputTorqueGraph, 0);
+                    while (inputSpeedGraph.data.length > 0) {
+                        Plotly.deleteTraces(inputSpeedGraph, 0);
                     }
-                    Plotly.addTraces(outputTorqueGraph, { x: response.signal[0], y: response.signal[1], name: "Output Torque" });
-                    Plotly.addTraces(outputTorqueGraph, { x: response.refsignal[0], y: response.refsignal[1], name: "Reference Torque" });
+                    Plotly.addTraces(inputSpeedGraph, [{ x: response.signal[0], y: response.signal[1], name: "Input Speed" }]);
+                } else if (plotName == "inputTorque") {
+                    while (inputTorqueGraph.data.length > 0) {
+                        Plotly.deleteTraces(inputTorqueGraph, 0);
+                    }
+                    Plotly.addTraces(inputTorqueGraph, [{ x: response.signal[0], y: response.signal[1], name: "Load Torque" }]);
                 } else if (plotName == "outputSpeed") {
                     while (outputSpeedGraph.data.length > 0) {
                         Plotly.deleteTraces(outputSpeedGraph, 0);
                     }
-                    Plotly.addTraces(outputSpeedGraph, { x: response.signal[0], y: response.signal[1], name: "Output Speed" });
+                    Plotly.addTraces(outputSpeedGraph, [{ x: response.signal[0], y: response.signal[1], name: "Output Speed" }]);
                     Plotly.addTraces(outputSpeedGraph, { x: response.refsignal[0], y: response.refsignal[1], name: "Reference Speed" });
+                } else if (plotName == "outputTorque") {
+                    while (outputTorqueGraph.data.length > 0) {
+                        Plotly.deleteTraces(outputTorqueGraph, 0);
+                    }
+                    Plotly.addTraces(outputTorqueGraph, [{ x: response.signal[0], y: response.signal[1], name: "Output Torque" }]);
+                    Plotly.addTraces(outputTorqueGraph, { x: response.refsignal[0], y: response.refsignal[1], name: "Reference Torque" });
+                } else if (plotName == "outputCurrent") {
+                    while (outputCurrentGraph.data.length > 0) {
+                        Plotly.deleteTraces(outputCurrentGraph, 0);
+                    }
+                    Plotly.addTraces(outputCurrentGraph, [{ x: response.signal[0], y: response.signal[1], name: "Output Current" }]);
                 } else if (plotName == "outputVoltage") {
-                    Plotly.deleteTraces(outputDCVGraph, 0);
-                    Plotly.addTraces(outputDCVGraph, { x: response.signal[0], y: response.signal[1], name: "Output Voltage" });
+                    while (outputVoltageGraph.data.length > 0) {
+                        Plotly.deleteTraces(outputVoltageGraph, 0);
+                    }
+                    Plotly.addTraces(outputVoltageGraph, [{ x: response.signal[0], y: response.signal[1], name: "Output Voltage" }]);
                 }
             }
         })
     }
-</script>
 
-<script type="text/javascript">
-    $(window).resize(function () {
-        Plotly.Plots.resize(refSpeedGraph);
-        Plotly.Plots.resize(loadTorqueGraph);
-        Plotly.Plots.resize(outputSCGraph);
-        Plotly.Plots.resize(outputTorqueGraph);
-        Plotly.Plots.resize(outputSpeedGraph);
-        Plotly.Plots.resize(outputDCVGraph);
-    });
-</script>
-
-<script type="text/javascript">
-    $(".dropdown-menu li a").click(function () {
-        $(this).parents(".dropdown").find('.dropdown-toggle').html($(this).text() + '<span class="caret"></span>');
-        $(this).parents(".dropdown").find('.dropdown-toggle').val($(this).data('value'));
-        if ($(this).text() == "Constant") {
-            $(this).parents(".panel").find('.const').show();
-            $(this).parents(".panel").find('.step').hide();
-            $(this).parents(".panel").find('.ramp').hide();
-            $(this).parents(".panel").find('.sine').hide();
-            $(this).parents(".panel").find('.custom').hide();
-        }
-        else if ($(this).text() == "Step") {
-            $(this).parents(".panel").find('.const').hide();
-            $(this).parents(".panel").find('.step').show();
-            $(this).parents(".panel").find('.ramp').hide();
-            $(this).parents(".panel").find('.sine').hide();
-            $(this).parents(".panel").find('.custom').hide();
-        }
-        else if ($(this).text() == "Ramp") {
-            $(this).parents(".panel").find('.const').hide();
-            $(this).parents(".panel").find('.step').hide();
-            $(this).parents(".panel").find('.ramp').show();
-            $(this).parents(".panel").find('.sine').hide();
-            $(this).parents(".panel").find('.custom').hide();
-        }
-        else if ($(this).text() == "Sinusoid") {
-            $(this).parents(".panel").find('.const').hide();
-            $(this).parents(".panel").find('.step').hide();
-            $(this).parents(".panel").find('.ramp').hide();
-            $(this).parents(".panel").find('.sine').show();
-            $(this).parents(".panel").find('.custom').hide();
-        }
-        else if ($(this).text() == "Custom") {
-            $(this).parents(".panel").find('.const').hide();
-            $(this).parents(".panel").find('.step').hide();
-            $(this).parents(".panel").find('.sine').hide();
-            $(this).parents(".panel").find('.ramp').hide();
-            $(this).parents(".panel").find('.custom').show();
-            $(this).parents(".panel").find('#filename')[0].textContent = "Upload";
-        }
-
-        updatePlotData($(this).text(), $(this).parents(".panel")[0].id);
-    });
-
-    $(".inputField").change(function (event) {
-        updatePlotData($(this).parents(".panel").find(".dropdown-toggle")[0].text, $(this).parents(".panel")[0].id);
-    });
-
-    $("#endtime").change(function (event) {
-        var plotName = "inputSpeed";
-        var plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
-        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
-            updatePlotData(plotType, plotName);
-        }
-        plotName = "inputTorque";
-        plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
-        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
-            updatePlotData(plotType, plotName);
-        }
-    });
-
-    $("#sampletime").change(function (event) {
-        var plotName = "inputSpeed";
-        var plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
-        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
-            updatePlotData(plotType, plotName);
-        }
-        plotName = "inputTorque";
-        plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
-        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
-            updatePlotData(plotType, plotName);
-        }
-    });
-
+    // When an input field has changed, send the parameters to the controller to generate another signal.
     function updatePlotData(plotType, plotName) {
         var sampletime = document.getElementById('sampletime').value;
         var endtime = document.getElementById('endtime').value;
@@ -293,82 +209,5 @@
                 }
             });
         }
-    };
-</script>
-
-<script>
-    function UploadFile(file, plotName)
-    {
-        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Loading...";
-        var data = new FormData();
-        data.append("file", file);
-        data.append("plotname", plotName);
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", '@Url.Action("Upload", "Simulation")', true);
-        xhr.addEventListener("load", function (event) { UploadComplete(event, plotName, file.name); }, false);
-        xhr.addEventListener("error", function (event) { UploadFailed(event); }, false);
-        xhr.send(data);
-    }
-
-    function UploadComplete(event, plotName, fileName) {
-        if (event.target.status == 200) {
-            drawPlot(plotName);
-            $(document.getElementById(plotName)).find('#filename')[0].textContent = fileName;
-        }
-        else {
-            $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
-            alert("Error Uploading File");
-        }
-    }
-
-    function UploadFailed(event) {
-        $(document.getElementById(plotName)).find('#filename')[0].textContent = "Upload";
-        alert("There was an error attempting to upload the file.");
-    }
-</script>
-
-<script>
-    function clickUpload(event) {
-        $(event.path[3].children.upload).trigger('click');
-    };
-
-    var openFile = function (event) {
-        event.preventDefault();
-        if (event.path[0].files.length > 0) {
-            var f = event.path[0].files[0];
-            UploadFile(f, event.path[5].id);
-            event.path[0].value = "";
-        }
-        //var f = event.path[0].files[0];
-        //var reader = new FileReader();
-        //var name = f.name;
-        //var plotData = [];
-        //reader.onload = function (e) {
-        //    var data = e.target.result;
-        //    var workbook = XLSX.read(data, { type: 'binary' });
-        //    var i = 2;
-        //    var cellA = "A" + i;
-        //    var cellB = "B" + i;
-        //    var Sheet = workbook.Sheets[workbook.SheetNames[0]];
-        //    while (Sheet[cellA] !== undefined && Sheet[cellB] !== undefined) {
-        //        plotData[i - 2] = [Sheet[cellA].v, Sheet[cellB].v];
-        //        i++;
-        //        var cellA = "A" + i;
-        //        var cellB = "B" + i;
-        //    }
-        //};
-        //reader.readAsBinaryString(f);
-        //
-        //reader.onloadend = function (e) {
-        //    var id = event.path[4].id;
-        //    if (id == "inputSpeed") {
-        //        refSpeedPlot.series[0].data = plotData;
-        //        refSpeedPlot.replot({ resetAxes: true });
-        //    }
-        //    if (id == "inputTorque") {
-        //        loadTorquePlot.series[0].data = plotData;
-        //        loadTorquePlot.replot({ resetAxes: true });
-        //    }
-        //}
     };
 </script>
