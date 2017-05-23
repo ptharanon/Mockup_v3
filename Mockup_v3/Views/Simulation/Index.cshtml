@@ -32,7 +32,7 @@
     @Html.Partial("Output", new ViewDataDictionary { { "title", "DC Bus Voltage" }, { "id", "outputVoltage" }, { "plotid", "outputVoltageGraph" } })
     <!-- Export button -->
     <div style="margin:20px">
-        <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation")'" />
+        <input type="button" class="btn btn-primary btn-lg" value="EXPORT TO CSV" onclick="location.href='@Url.Action("ExportDataToCsv", "Simulation", new { type = "Simulation" })'" />
     </div>
 </div>
 

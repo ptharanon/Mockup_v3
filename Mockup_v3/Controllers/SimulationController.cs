@@ -203,29 +203,105 @@ namespace Mockup_v3.Controllers
             }
         }
 
-        public void ExportDataToCsv()
+        public void ExportDataToCsv(string type)
         {
-
             StringWriter sw = new StringWriter();
 
-            sw.WriteLine("\"Time\",\"Stator Current\",\"Torque\",\"Speed\",\"DC Voltage\"");
+            switch (type){
 
-            Response.ClearContent();
-            Response.AddHeader("content-disposition", "attachment;filename=Simulation.csv");
-            Response.ContentType = "text/csv";
-            
-            for (int i = 0; i < graphs.OutputCurrentTrace.Count; i++)
-            {
-                sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\"",
-                                            graphs.OutputCurrentTrace[0][i],
-                                            graphs.OutputCurrentTrace[1][i],
-                                            graphs.OutputSpeedTrace[1][i],
-                                            graphs.OutputTorqueTrace[1][i],
-                                            graphs.OutputVoltageTrace[1][i]));
+                case "Simulation":
+                    sw.WriteLine("\"Time\",\"Stator Current\",\"Torque\",\"Speed\",\"DC Voltage\"");
+
+                    Response.ClearContent();
+                    Response.AddHeader("content-disposition", "attachment;filename=Simulation.csv");
+                    Response.ContentType = "text/csv";
+
+                    for (int i = 0; i < graphs.OutputCurrentTrace[0].Count; i++)
+                    {
+                        sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\"",
+                                                    graphs.OutputCurrentTrace[0][i],
+                                                    graphs.OutputCurrentTrace[1][i],
+                                                    graphs.OutputTorqueTrace[1][i],
+                                                    graphs.OutputSpeedTrace[1][i],
+                                                    graphs.OutputVoltageTrace[1][i]));
+                    }
+
+                    Response.Write(sw.ToString());
+                    Response.End();
+                    break;
+
+                case "Stator Current":
+                    sw.WriteLine("\"Time\",\"Stator Current\"");
+
+                    Response.ClearContent();
+                    Response.AddHeader("content-disposition", "attachment;filename=Current.csv");
+                    Response.ContentType = "text/csv";
+
+                    for (int i = 0; i < graphs.OutputCurrentTrace[0].Count; i++)
+                    {
+                        sw.WriteLine(string.Format("\"{0}\",\"{1}\"",
+                                                    graphs.OutputCurrentTrace[0][i],
+                                                    graphs.OutputCurrentTrace[1][i]));
+                    }
+
+                    Response.Write(sw.ToString());
+                    Response.End();
+                    break;
+
+                case "Torque":
+                    sw.WriteLine("\"Time\",\"Torque\"");
+
+                    Response.ClearContent();
+                    Response.AddHeader("content-disposition", "attachment;filename=Torque.csv");
+                    Response.ContentType = "text/csv";
+
+                    for (int i = 0; i < graphs.OutputCurrentTrace[0].Count; i++)
+                    {
+                        sw.WriteLine(string.Format("\"{0}\",\"{1}\"",
+                                                    graphs.OutputCurrentTrace[0][i],
+                                                    graphs.OutputTorqueTrace[1][i]));
+                    }
+
+                    Response.Write(sw.ToString());
+                    Response.End();
+                    break;
+
+                case "Speed":
+                    sw.WriteLine("\"Time\",\"Speed\"");
+
+                    Response.ClearContent();
+                    Response.AddHeader("content-disposition", "attachment;filename=Speed.csv");
+                    Response.ContentType = "text/csv";
+
+                    for (int i = 0; i < graphs.OutputCurrentTrace[0].Count; i++)
+                    {
+                        sw.WriteLine(string.Format("\"{0}\",\"{1}\"",
+                                                    graphs.OutputCurrentTrace[0][i],
+                                                    graphs.OutputSpeedTrace[1][i]));
+                    }
+
+                    Response.Write(sw.ToString());
+                    Response.End();
+                    break;
+
+                case "DC Bus Voltage":
+                    sw.WriteLine("\"Time\",\"DC Voltage\"");
+
+                    Response.ClearContent();
+                    Response.AddHeader("content-disposition", "attachment;filename=Voltage.csv");
+                    Response.ContentType = "text/csv";
+
+                    for (int i = 0; i < graphs.OutputCurrentTrace[0].Count; i++)
+                    {
+                        sw.WriteLine(string.Format("\"{0}\",\"{1}\"",
+                                                    graphs.OutputCurrentTrace[0][i],
+                                                    graphs.OutputVoltageTrace[1][i]));
+                    }
+
+                    Response.Write(sw.ToString());
+                    Response.End();
+                    break;
             }
-
-            Response.Write(sw.ToString());
-            Response.End();
         }
     }
 }
