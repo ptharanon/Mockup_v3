@@ -323,6 +323,7 @@
     <Content Include="Views\Simulation\Output.cshtml" />
     <Content Include="Views\Simulation\Input.cshtml" />
     <Content Include="Views\Simulation\MotorSelection.cshtml" />
+    <Content Include="Views\Simulation\SignalSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MotorLibrary.Helper\MotorLibrary.Helper.csproj">

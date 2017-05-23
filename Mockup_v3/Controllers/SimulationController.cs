@@ -28,9 +28,8 @@ namespace Mockup_v3.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4, double endtime)
+        public ActionResult UpdateGraph(String plot, String type, double param1, double param2, double param3, double param4, double endtime, double sample)
         {
-            double sample = 1 * Math.Pow(10, -4);
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
@@ -155,15 +154,53 @@ namespace Mockup_v3.Controllers
         public ActionResult Simulate(String motor)
         {
             SimulationResults results = new SimulationResults();
-            List<List<List<double>>> output = results.startSimulation(motor, graphs.InputSpeedTrace, graphs.InputTorqueTrace, graphs.InputTorqueTrace[0].Count);
-            graphs.OutputCurrentTrace = output[0];
-            graphs.OutputSpeedTrace = output[1];
-            graphs.OutputRefSpeedTrace = output[2];
-            graphs.OutputTorqueTrace = output[3];
-            graphs.OutputRefTorqueTrace = output[4];
-            graphs.OutputVoltageTrace = output[5];
 
-            return Json(new { done = true }, JsonRequestBehavior.AllowGet);
+            List<List<Double>> speed = graphs.InputSpeedTrace;
+            List<List<Double>> torque = graphs.InputTorqueTrace;
+
+            double sample1 = speed[0][1] - speed[0][0];
+            double sample2 = torque[0][1] - torque[0][0];
+
+            if (sample1 != sample2)
+            {
+                return Json(new { zoh = false, sm = false }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                int speed_size = speed[0].Count;
+                int torque_size = torque[0].Count;
+                bool zohused = false;
+                if (speed_size > torque_size)
+                {
+                    double zoh = torque[1][torque_size - 1];
+                    for (int i=torque_size; i<speed_size; i++)
+                    {
+                        torque[0].Add(speed[0][i]);
+                        torque[1].Add(zoh);
+                    }
+                    zohused = true;
+                }
+                if (torque_size > speed_size)
+                {
+                    double zoh = speed[1][speed_size - 1];
+                    for (int i = speed_size; i < torque_size; i++)
+                    {
+                        speed[0].Add(torque[0][i]);
+                        speed[1].Add(zoh);
+                    }
+                    zohused = true;
+                }
+
+                List<List<List<double>>> output = results.startSimulation(motor, speed, torque, speed_size);
+                graphs.OutputCurrentTrace = output[0];
+                graphs.OutputSpeedTrace = output[1];
+                graphs.OutputRefSpeedTrace = output[2];
+                graphs.OutputTorqueTrace = output[3];
+                graphs.OutputRefTorqueTrace = output[4];
+                graphs.OutputVoltageTrace = output[5];
+
+                return Json(new { zoh = zohused, sm = true }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public void ExportDataToCsv()

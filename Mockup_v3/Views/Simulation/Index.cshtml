@@ -15,6 +15,7 @@
         @Html.Partial("MotorSelection")
         @Html.Partial("Input", new ViewDataDictionary { { "title", "Reference Speed" }, { "id", "inputSpeed" }, { "plotid", "refSpeedGraph" } })
         @Html.Partial("Input", new ViewDataDictionary { { "title", "Load Torque" }, { "id", "inputTorque" }, { "plotid", "loadTorqueGraph" } })
+        @Html.Partial("SignalSettings")
         <!-- Simulate button -->
         <div style="margin:20px">
             <button id="simulate-btn" type="submit" class="btn btn-primary btn-lg">SIMULATE!</button>
@@ -36,30 +37,54 @@
 </div>
 
 <script>
-    var layout = {
-        xaxis: {
-            title: 'Time',
-            showticklabels: true
-        },
-        yaxis: {
-            showticklabels: true
-        },
-        margin: {
-            autosize: true,
-            t: 0,
-            b: 40,
-            l: 30,
-            r: 10
-        },
+    var layout1 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
         hovermode: 'closest',
         showlegend: false
     };
-    Plotly.plot('refSpeedGraph', [{ x: [], y: [] }], layout, { showLink: false });
-    Plotly.plot('loadTorqueGraph', [{ x: [], y: [] }], layout, { showLink: false });
-    Plotly.plot('outputSCGraph', [{ x: [], y: [] }], layout, { showLink: false });
-    Plotly.plot('outputTorqueGraph', [{ x: [], y: [] }], layout, { showLink: false });
-    Plotly.plot('outputSpeedGraph', [{ x: [], y: [] }], layout, { showLink: false });
-    Plotly.plot('outputDCVGraph', [{ x: [], y: [] }], layout, { showLink: false });
+    Plotly.plot('refSpeedGraph', [{ x: [], y: [] }], layout1, { showLink: false });
+    var layout2 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
+        hovermode: 'closest',
+        showlegend: false
+    };
+    Plotly.plot('loadTorqueGraph', [{ x: [], y: [] }], layout2, { showLink: false });
+    var layout3 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
+        hovermode: 'closest',
+        showlegend: false
+    };
+    Plotly.plot('outputSCGraph', [{ x: [], y: [] }], layout3, { showLink: false });
+    var layout4 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
+        hovermode: 'closest',
+        showlegend: false
+    };
+    Plotly.plot('outputTorqueGraph', [{ x: [], y: [] }], layout4, { showLink: false });
+    var layout5 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
+        hovermode: 'closest',
+        showlegend: false
+    };
+    Plotly.plot('outputSpeedGraph', [{ x: [], y: [] }], layout5, { showLink: false });
+    var layout6 = {
+        xaxis: { title: 'Time', showticklabels: true },
+        yaxis: { showticklabels: true },
+        margin: { autosize: true, t: 0, b: 40, l: 30, r: 10 },
+        hovermode: 'closest',
+        showlegend: false
+    };
+    Plotly.plot('outputDCVGraph', [{ x: [], y: [] }], layout6, { showLink: false });
 </script>
 
 <script>
@@ -74,10 +99,17 @@
                 type: "post",
                 dataType: 'json',
                 success: function (response) {
-                    drawPlot("outputCurrent");
-                    drawPlot("outputTorque");
-                    drawPlot("outputSpeed");
-                    drawPlot("outputVoltage");
+                    if (response.zoh == true) {
+                        alert('NOTE: Zero order hold used to match longer input.');
+                    }
+                    if (response.sm == false) {
+                        alert('Error: Sample times don\'t match');
+                    } else {
+                        drawPlot("outputCurrent");
+                        drawPlot("outputTorque");
+                        drawPlot("outputSpeed");
+                        drawPlot("outputVoltage");
+                    }
                     document.getElementById('simulate-btn').textContent = "SIMULATE!";
                 },
                 error: function () {
@@ -93,41 +125,38 @@
     });
 
     function drawPlot(plotName) {
-        var endtime = 2;
         $.ajax({
             url: '@Url.Action("GetPlotData", "Simulation")',
             data: { plotname: plotName },
             type: "get",
             success: function (response) {
-                endtime = response.signal[0][response.signal[0].length-1];
                 if (plotName == "inputSpeed") {
                     Plotly.deleteTraces(refSpeedGraph, 0);
-                    Plotly.addTraces(refSpeedGraph, { x: response.signal[0], y: response.signal[1] });
+                    Plotly.addTraces(refSpeedGraph, { x: response.signal[0], y: response.signal[1], name: "Input Speed" });
                 } else if (plotName == "inputTorque") {
                     Plotly.deleteTraces(loadTorqueGraph, 0);
-                    Plotly.addTraces(loadTorqueGraph, { x: response.signal[0], y: response.signal[1] });
+                    Plotly.addTraces(loadTorqueGraph, { x: response.signal[0], y: response.signal[1], name: "Load Torque" });
                 } else if (plotName == "outputCurrent") {
                     Plotly.deleteTraces(outputSCGraph, 0);
-                    Plotly.addTraces(outputSCGraph, { x: response.signal[0], y: response.signal[1] });
+                    Plotly.addTraces(outputSCGraph, { x: response.signal[0], y: response.signal[1], name: "Output Current" });
                 } else if (plotName == "outputTorque") {
                     while (outputTorqueGraph.data.length > 0) {
                         Plotly.deleteTraces(outputTorqueGraph, 0);
                     }
-                    Plotly.addTraces(outputTorqueGraph, { x: response.signal[0], y: response.signal[1] });
-                    Plotly.addTraces(outputTorqueGraph, { x: response.refsignal[0], y: response.refsignal[1] });
+                    Plotly.addTraces(outputTorqueGraph, { x: response.signal[0], y: response.signal[1], name: "Output Torque" });
+                    Plotly.addTraces(outputTorqueGraph, { x: response.refsignal[0], y: response.refsignal[1], name: "Reference Torque" });
                 } else if (plotName == "outputSpeed") {
                     while (outputSpeedGraph.data.length > 0) {
                         Plotly.deleteTraces(outputSpeedGraph, 0);
                     }
-                    Plotly.addTraces(outputSpeedGraph, { x: response.signal[0], y: response.signal[1] });
-                    Plotly.addTraces(outputSpeedGraph, { x: response.refsignal[0], y: response.refsignal[1] });
+                    Plotly.addTraces(outputSpeedGraph, { x: response.signal[0], y: response.signal[1], name: "Output Speed" });
+                    Plotly.addTraces(outputSpeedGraph, { x: response.refsignal[0], y: response.refsignal[1], name: "Reference Speed" });
                 } else if (plotName == "outputVoltage") {
                     Plotly.deleteTraces(outputDCVGraph, 0);
-                    Plotly.addTraces(outputDCVGraph, { x: response.signal[0], y: response.signal[1] });
+                    Plotly.addTraces(outputDCVGraph, { x: response.signal[0], y: response.signal[1], name: "Output Voltage" });
                 }
             }
         })
-        return endtime;
     }
 </script>
 
@@ -191,11 +220,33 @@
     });
 
     $("#endtime").change(function (event) {
-        updatePlotData(document.getElementById("inputSpeed").children[0].children[1].children[0].children[0].text, "inputSpeed");
-        updatePlotData(document.getElementById("inputTorque").children[0].children[1].children[0].children[0].text, "inputTorque");
+        var plotName = "inputSpeed";
+        var plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
+        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
+            updatePlotData(plotType, plotName);
+        }
+        plotName = "inputTorque";
+        plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
+        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
+            updatePlotData(plotType, plotName);
+        }
+    });
+
+    $("#sampletime").change(function (event) {
+        var plotName = "inputSpeed";
+        var plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
+        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
+            updatePlotData(plotType, plotName);
+        }
+        plotName = "inputTorque";
+        plotType = document.getElementById(plotName).children[0].children[1].children[0].children[0].text;
+        if (!plotType.includes("Custom") && !plotType.includes("Select Waveform")) {
+            updatePlotData(plotType, plotName);
+        }
     });
 
     function updatePlotData(plotType, plotName) {
+        var sampletime = document.getElementById('sampletime').value;
         var endtime = document.getElementById('endtime').value;
         if (plotType == "Constant") {
             var inputFields = document.getElementById(plotName).children[0].children[2].children[0];
@@ -232,7 +283,8 @@
                     param2: param2,
                     param3: param3,
                     param4: param4,
-                    endtime: endtime
+                    endtime: endtime,
+                    sample: sampletime
                 },
                 type: "post",
                 dataType: 'json',
@@ -260,8 +312,7 @@
 
     function UploadComplete(event, plotName, fileName) {
         if (event.target.status == 200) {
-            var endtime = drawPlot(plotName);
-            document.getElementById('endtime').value = endtime;
+            drawPlot(plotName);
             $(document.getElementById(plotName)).find('#filename')[0].textContent = fileName;
         }
         else {
@@ -286,6 +337,7 @@
         if (event.path[0].files.length > 0) {
             var f = event.path[0].files[0];
             UploadFile(f, event.path[5].id);
+            event.path[0].value = "";
         }
         //var f = event.path[0].files[0];
         //var reader = new FileReader();

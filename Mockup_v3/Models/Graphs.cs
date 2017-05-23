@@ -21,7 +21,7 @@ namespace Mockup_v3.Models
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            for (int i = 0; i <= (endtime / sample) + 1; i++)
+            for (int i = 0; i < (endtime / sample) + 1; i++)
             {
                 signal[0].Add(i * sample);
                 signal[1].Add(value);
@@ -35,7 +35,7 @@ namespace Mockup_v3.Models
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            for (int i = 0; i <= (endtime / sample) + 1 ; i++)
+            for (int i = 0; i < (endtime / sample) + 1 ; i++)
             {
                 if (i * sample < steptime)
                 {
@@ -57,7 +57,7 @@ namespace Mockup_v3.Models
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            for (int i = 0; i <= (endtime / sample) + 1 ; i++)
+            for (int i = 0; i < (endtime / sample) + 1 ; i++)
             {
                 if (i * sample < starttime)
                 {
@@ -79,7 +79,7 @@ namespace Mockup_v3.Models
             List<List<double>> signal = new List<List<double>>();
             signal.Add(new List<double>());
             signal.Add(new List<double>());
-            for (int i = 0; i <= (endtime / sample) + 1 ; i++)
+            for (int i = 0; i < (endtime / sample) + 1 ; i++)
             {
                 signal[0].Add(i * sample);
                 signal[1].Add(amplitude * Math.Sin(2 * Math.PI * frequency * i * sample + phase) + bias);
