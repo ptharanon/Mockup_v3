@@ -44,10 +44,15 @@ namespace Mockup_v3.Models
                 speedInput[i] = speedCoordinates[1][i];
                 torqueInput[i] = torqueCoordinates[1][i];
             }
+            //Calculate the simulation total steps
             double simulationTime = timeVector[size - 1] - timeVector[0];
+
+            //Calculate the sampling time from the inptus
             double sampleTime = timeVector[1] - timeVector[0];
+            
             double MODEL_SAMPLING = 1E-04;
 
+            //Calculate new total size based on input's and model's sampling time
             int total_size = (size - 1) * (int) (sampleTime / MODEL_SAMPLING);
             int scale = total_size / size;
 
@@ -56,27 +61,34 @@ namespace Mockup_v3.Models
             double[] results = new double[total_size * 6];
 
             List<List<List<double>>> setOfOutputs = new List<List<List<double>>>();
+
             List<List<double>> stator_Current = new List<List<double>>();
             stator_Current.Add(new List<double>());
             stator_Current.Add(new List<double>());
+
             List<List<double>> motor_Speed = new List<List<double>>();
             motor_Speed.Add(new List<double>());
             motor_Speed.Add(new List<double>());
+
             List<List<double>> ref_Speed = new List<List<double>>();
             ref_Speed.Add(new List<double>());
             ref_Speed.Add(new List<double>());
+
             List<List<double>> motor_Torque = new List<List<double>>();
             motor_Torque.Add(new List<double>());
             motor_Torque.Add(new List<double>());
+
             List<List<double>> ref_Torque = new List<List<double>>();
             ref_Torque.Add(new List<double>());
             ref_Torque.Add(new List<double>());
+
             List<List<double>> DCBus_Voltage = new List<List<double>>();
             DCBus_Voltage.Add(new List<double>());
             DCBus_Voltage.Add(new List<double>());
 
             try
             {
+                //Alllocate memories to store the simulation outputs and have a temporary pointer to point to that memory
                 IntPtr pointer;
                 if (motor.Contains("MA60-0630-A"))
                 {
@@ -90,7 +102,9 @@ namespace Mockup_v3.Models
                 {
                     pointer = RunModel3(timeVector, speedInput, torqueInput, size);
                 }
+                //Copy the temporary pointer's address to the results array's pointer
                 Marshal.Copy(pointer, results, 0, total_size * 6);
+                //Free the memory of the temporary pointer
                 Marshal.FreeCoTaskMem(pointer);
 
                 for (int i = 0; i < total_size; i++)
