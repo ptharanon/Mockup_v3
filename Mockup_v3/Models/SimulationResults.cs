@@ -27,11 +27,6 @@ namespace Mockup_v3.Models
         //Definition for the entry point function (return type pointer - platform specific)
         public static extern IntPtr RunModel3(double[] timeVector, double[] speedInput_arr, double[] torqueInput_arr, int size);
 
-        //Function to process input data into input arrays
-        public void processData(double[][] speedCoordinates, double[][] torqueCoordinates, int size)
-        {
-        }
-
         /*  Function to run the simulation
          *  Inputs: 2D double array of speed and torque, data size
          *  Outputs: One big list contains 4 different outputs (each output is represented by a list of 2D array)
@@ -50,7 +45,6 @@ namespace Mockup_v3.Models
                 torqueInput[i] = torqueCoordinates[1][i];
             }
             double simulationTime = timeVector[size - 1] - timeVector[0];
-            //int size = Math.Min((int)(4000 * simulationTime), 10000);
             double sampleTime = timeVector[1] - timeVector[0];
             double MODEL_SAMPLING = 1E-04;
 
@@ -101,13 +95,6 @@ namespace Mockup_v3.Models
 
                 for (int i = 0; i < total_size; i++)
                 {
-                    /*
-                    int index_statorCurrent = i;
-                    int index_motorSpeed = i + 1 * size;
-                    int index_motorTorque = i + 3 * size;
-                    int index_DCBusVoltage = i + 5 * size;
-                    */
-
                     int index_statorCurrent = i;
                     int index_motorSpeed = i + 1 * total_size;
                     int index_refSpeed = i + 2 * total_size;
@@ -130,20 +117,6 @@ namespace Mockup_v3.Models
                     ref_Torque[1].Add(results[index_refTorque]);
                     DCBus_Voltage[0].Add(scaledTime[i]);
                     DCBus_Voltage[1].Add(results[index_DCBusVoltage]);
-
-                    //stator_Current.Add(new double[] { scaledTime[i], results[index_statorCurrent] });
-                    //motor_Speed.Add(new double[] { scaledTime[i], results[index_motorSpeed] });
-                    //motor_Torque.Add(new double[] { scaledTime[i], results[index_motorTorque] });
-                    //DCBus_Voltage.Add(new double[] { scaledTime[i], results[index_DCBusVoltage] });
-
-                    /*
-                    stator_Current.Add(new double[]{ timeVector[i], results[index_statorCurrent]});
-                    motor_Speed.Add(new double[] { timeVector[i], results[index_motorSpeed] });
-                    motor_Torque.Add(new double[] { timeVector[i], results[index_motorTorque] });
-                    DCBus_Voltage.Add(new double[] { timeVector[i], results[index_DCBusVoltage] });
-                    */
-
-                    //System.Diagnostics.Debug.WriteLine(stator_Current[i]+",");
                 }
             }
             catch(Exception)
