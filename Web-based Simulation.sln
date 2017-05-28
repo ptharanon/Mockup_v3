@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mockup_v3", "Mockup_v3\Mockup_v3.csproj", "{6031EE9B-CCCE-49CE-8A1F-8F93E1A6A767}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web-based Simulation", "Mockup_v3\Web-based Simulation.csproj", "{6031EE9B-CCCE-49CE-8A1F-8F93E1A6A767}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorLibrary.Helper", "MotorLibrary.Helper\MotorLibrary.Helper.csproj", "{B9D68CFF-7658-41B0-BEC0-F963796C59C5}"
 EndProject
