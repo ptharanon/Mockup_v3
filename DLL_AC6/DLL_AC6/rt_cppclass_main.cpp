@@ -24,6 +24,7 @@
  *
  */
 
+//Uncomment these for local testing
 /*
 #include <iostream>
 #include <fstream>
@@ -372,7 +373,7 @@ static void customeInitializer(MODEL_CLASSNAME & mdl, double speedInput_arr[],do
 /* Function: csvLoader ====================================================
 *
 * Abstract:
-*	Load the test input csv files
+*	Load the test input csv files, used for local testing
 *
 */
 /*
@@ -416,7 +417,7 @@ static double *csvLoader(string fileName,int size, bool isTime)
 /* Function: getSize ====================================================
 *
 * Abstract:
-*	Get file size (number of samples)
+*	Get file size (number of samples), used for local testing
 *
 */
 /*
@@ -487,9 +488,9 @@ extern "C"
 
 	(void)printf("\n** starting the model **\n");
 
-	/************************
-	*	Load input arrays	*
-	************************/
+	/************************************
+	*	Load input arrays for testing	*
+	************************************/
 	/*
 	string speed_fileName = "speedInput.csv";
 	string torque_fileName = "torqueInput.csv";
@@ -556,6 +557,7 @@ extern "C"
 
 		rt_OneStep(MODEL_INSTANCE);
 		
+		//For local testing (write outputs to text file)
 		/*
 		myfile << MODEL_INSTANCE.ac6_example_Y.Statorcurrent << ","
 			<< MODEL_INSTANCE.ac6_example_Y.Rotorspeed[0] << ","
