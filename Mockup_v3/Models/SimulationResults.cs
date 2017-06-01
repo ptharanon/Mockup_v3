@@ -86,56 +86,49 @@ namespace Mockup_v3.Models
             DCBus_Voltage.Add(new List<double>());
             DCBus_Voltage.Add(new List<double>());
 
-            try
+            //Allocate memories to store the simulation outputs and have a temporary pointer to point to that memory
+            IntPtr pointer;
+            if (motor.Contains("MA60-0630-A"))
             {
-                //Alllocate memories to store the simulation outputs and have a temporary pointer to point to that memory
-                IntPtr pointer;
-                if (motor.Contains("MA60-0630-A"))
-                {
-                    pointer = RunModel1(timeVector, speedInput, torqueInput, size);
-                }
-                else if (motor.Contains("MA80-2430-A"))
-                {
-                    pointer = RunModel2(timeVector, speedInput, torqueInput, size);
-                }
-                else
-                {
-                    pointer = RunModel3(timeVector, speedInput, torqueInput, size);
-                }
-                //Copy the temporary pointer's address to the results array's pointer
-                Marshal.Copy(pointer, results, 0, total_size * 6);
-                //Free the memory of the temporary pointer
-                Marshal.FreeCoTaskMem(pointer);
-
-                for (int i = 0; i < total_size; i++)
-                {
-                    int index_statorCurrent = i;
-                    int index_motorSpeed = i + 1 * total_size;
-                    int index_refSpeed = i + 2 * total_size;
-                    int index_motorTorque = i + 3 * total_size;
-                    int index_refTorque = i + 4 * total_size;
-                    int index_DCBusVoltage = i + 5 * total_size;
-
-
-                    scaledTime[i] = MODEL_SAMPLING * index_statorCurrent;
-
-                    stator_Current[0].Add(scaledTime[i]);
-                    stator_Current[1].Add(results[index_statorCurrent]);
-                    motor_Speed[0].Add(scaledTime[i]);
-                    motor_Speed[1].Add(results[index_motorSpeed]);
-                    ref_Speed[0].Add(scaledTime[i]);
-                    ref_Speed[1].Add(results[index_refSpeed]);
-                    motor_Torque[0].Add(scaledTime[i]);
-                    motor_Torque[1].Add(results[index_motorTorque]);
-                    ref_Torque[0].Add(scaledTime[i]);
-                    ref_Torque[1].Add(results[index_refTorque]);
-                    DCBus_Voltage[0].Add(scaledTime[i]);
-                    DCBus_Voltage[1].Add(results[index_DCBusVoltage]);
-                }
+                pointer = RunModel1(timeVector, speedInput, torqueInput, size);
             }
-            catch(Exception)
+            else if (motor.Contains("MA80-2430-A"))
             {
-                System.Diagnostics.Debug.WriteLine("Error during simulation step");
+                pointer = RunModel2(timeVector, speedInput, torqueInput, size);
+            }
+            else
+            {
+                pointer = RunModel3(timeVector, speedInput, torqueInput, size);
+            }
+            //Copy the temporary pointer's address to the results array's pointer
+            Marshal.Copy(pointer, results, 0, total_size * 6);
+            //Free the memory of the temporary pointer
+            Marshal.FreeCoTaskMem(pointer);
+
+            for (int i = 0; i < total_size; i++)
+            {
+                int index_statorCurrent = i;
+                int index_motorSpeed = i + 1 * total_size;
+                int index_refSpeed = i + 2 * total_size;
+                int index_motorTorque = i + 3 * total_size;
+                int index_refTorque = i + 4 * total_size;
+                int index_DCBusVoltage = i + 5 * total_size;
+
+
+                scaledTime[i] = MODEL_SAMPLING * index_statorCurrent;
+
+                stator_Current[0].Add(scaledTime[i]);
+                stator_Current[1].Add(results[index_statorCurrent]);
+                motor_Speed[0].Add(scaledTime[i]);
+                motor_Speed[1].Add(results[index_motorSpeed]);
+                ref_Speed[0].Add(scaledTime[i]);
+                ref_Speed[1].Add(results[index_refSpeed]);
+                motor_Torque[0].Add(scaledTime[i]);
+                motor_Torque[1].Add(results[index_motorTorque]);
+                ref_Torque[0].Add(scaledTime[i]);
+                ref_Torque[1].Add(results[index_refTorque]);
+                DCBus_Voltage[0].Add(scaledTime[i]);
+                DCBus_Voltage[1].Add(results[index_DCBusVoltage]);
             }
 
             setOfOutputs.Add(stator_Current);

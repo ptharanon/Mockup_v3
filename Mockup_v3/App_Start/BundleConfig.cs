@@ -31,7 +31,8 @@ namespace Mockup_v3
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new Bundle("~/Content/css").Include(
+                      "~/Content/googlefont.css",
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap.min.css",
                       "~/Content/About.css",
